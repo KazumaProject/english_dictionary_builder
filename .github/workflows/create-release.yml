@@ -25,14 +25,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # ▼▼▼ 修正点: 'words' パッケージもダウンロードする ▼▼▼
       - name: Download NLTK data
         run: python -m nltk.downloader punkt punkt_tab words
 
       - name: Run script to generate n-gram file
         run: python main.py
 
+      # ▼▼▼ このステップを追加 ▼▼▼
+      - name: Archive production artifacts
+        run: |
+          # スクリプトの設定に応じて動的に決まるファイル名を取得
+          ARTIFACT_NAME=$(ls ./*-grams_score_*.txt)
+          # ZIPファイル名を設定 (例: 1-grams_score_cost.zip)
+          zip "${ARTIFACT_NAME%.txt}.zip" "$ARTIFACT_NAME"
+
+      # ▼▼▼ 'files' の指定を *.zip に変更 ▼▼▼
       - name: Create Release and Upload Asset
         uses: softprops/action-gh-release@v2
         with:
-          files: ./*-grams_score_*.txt
+          files: ./*.zip # 生成されたZIPファイルをアップロード
