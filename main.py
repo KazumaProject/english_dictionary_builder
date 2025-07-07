@@ -19,8 +19,8 @@ SCORE_TYPE = 'cost'
 DATASET_CONFIGS = [
     {"name": "wikipedia", "config": "20220301.en", "split": "train", "column": "text"},
     {"name": "bookcorpus", "config": None, "split": "train", "column": "text"},
-    # さらに大規模なデータセットが必要な場合は、以下のコメントを解除します
-    # {"name": "c4", "config": "en", "split": "train", "column": "text"},
+    # C4データセットの一部（最初の1%）を追加。'1%'を'5%'や'100000'（行数）などに変更可能
+    {"name": "c4", "config": "en", "split": "train[:5%]", "column": "text"},
 ]
 # --------------------------------------------------------------------------
 
@@ -48,16 +48,11 @@ ngram_counts = Counter()
 # (3) ★★★ 複数のデータセットを順番に処理 ★★★
 for config in DATASET_CONFIGS:
     dataset_name = config["name"]
-    print(f"\nProcessing dataset: {dataset_name}...")
+    print(f"\nProcessing dataset: {dataset_name} (split: {config['split']})...")
 
     # データセットの総ドキュメント数を取得 (プログレスバー用)
-    try:
-        # get_dataset_infos にも trust_remote_code が必要
-        infos = get_dataset_infos(dataset_name, config["config"], trust_remote_code=True)
-        total_docs = infos[config["split"]].num_examples
-    except Exception as e:
-        print(f"Could not get dataset info for {dataset_name}, progress bar may be inaccurate. Error: {e}")
-        total_docs = None
+    # スライスを使うと正確な合計が取れない場合があるため、totalをNoneに設定
+    total_docs = None
 
     # データセットをストリーミングで読み込み
     dataset = load_dataset(
@@ -65,7 +60,7 @@ for config in DATASET_CONFIGS:
         config.get("config"),
         split=config["split"],
         streaming=True,
-        trust_remote_code=True  # ★★★ この行を追加 ★★★
+        trust_remote_code=True
     )
 
     # N-gramの頻度を計算
