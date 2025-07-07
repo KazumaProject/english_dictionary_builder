@@ -14,6 +14,10 @@ jobs:
     # ジョブを実行する仮想環境
     runs-on: ubuntu-latest
 
+    # ▼▼▼ このブロックを追加して書き込み権限を与える ▼▼▼
+    permissions:
+      contents: write
+
     # ジョブのステップ
     steps:
       # 1. リポジトリのコードをチェックアウト
@@ -24,7 +28,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10' # 必要に応じてバージョン変更
+          python-version: '3.10'
 
       # 3. 必要なライブラリをインストール
       - name: Install dependencies
