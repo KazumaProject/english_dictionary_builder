@@ -1,0 +1,45 @@
+# ワークフローの名前
+name: Create and Release N-gram File
+
+# ワークフローが実行されるトリガー
+on:
+  # 'v'で始まるタグ（例: v1.0, v1.2.3）がプッシュされたときに実行
+  push:
+    tags:
+      - 'v*.*.*'
+
+# 実行するジョブを定義
+jobs:
+  build-and-release:
+    # ジョブを実行する仮想環境
+    runs-on: ubuntu-latest
+
+    # ジョブのステップ
+    steps:
+      # 1. リポジトリのコードをチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Python環境をセットアップ
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' # 必要に応じてバージョン変更
+
+      # 3. 必要なライブラリをインストール
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. Pythonスクリプトを実行してファイルを生成
+      #    スクリプト内のNLTKデータダウンロードもここで実行される
+      - name: Run script to generate n-gram file
+        run: python main.py # スクリプトのファイル名に合わせて変更してください
+
+      # 5. リリースを作成し、生成されたファイルをアップロード
+      - name: Create Release and Upload Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          # ワイルドカード(*)を使って、動的に生成されるファイル名を指定
+          files: ./*-grams_score_*.txt
