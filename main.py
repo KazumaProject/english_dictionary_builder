@@ -16,13 +16,11 @@ N_GRAM_SIZE = 1
 SCORE_TYPE = 'cost'
 
 # 3. ★★★ 使用するデータセットのリスト ★★★
-# 処理したいデータセットをここに追加・編集します
 DATASET_CONFIGS = [
     {"name": "wikipedia", "config": "20220301.en", "split": "train", "column": "text"},
     {"name": "bookcorpus", "config": None, "split": "train", "column": "text"},
     # さらに大規模なデータセットが必要な場合は、以下のコメントを解除します
-    {"name": "c4", "config": "en", "split": "train", "column": "text"},
-    # {"name": "eleutherai/the_pile", "config": None, "split": "train", "column": "text"},
+    # {"name": "c4", "config": "en", "split": "train", "column": "text"},
 ]
 # --------------------------------------------------------------------------
 
@@ -54,18 +52,20 @@ for config in DATASET_CONFIGS:
 
     # データセットの総ドキュメント数を取得 (プログレスバー用)
     try:
-        infos = get_dataset_infos(dataset_name, config["config"])
+        # get_dataset_infos にも trust_remote_code が必要
+        infos = get_dataset_infos(dataset_name, config["config"], trust_remote_code=True)
         total_docs = infos[config["split"]].num_examples
     except Exception as e:
         print(f"Could not get dataset info for {dataset_name}, progress bar may be inaccurate. Error: {e}")
-        total_docs = None # 不明な場合はETAなし
+        total_docs = None
 
     # データセットをストリーミングで読み込み
     dataset = load_dataset(
         dataset_name,
         config.get("config"),
         split=config["split"],
-        streaming=True
+        streaming=True,
+        trust_remote_code=True  # ★★★ この行を追加 ★★★
     )
 
     # N-gramの頻度を計算
@@ -89,7 +89,6 @@ print("\n✅ All datasets processed. Frequency counting complete.")
 print(f"Calculating floating point '{SCORE_TYPE}' scores...")
 float_scores_data = []
 
-# ... (スコア計算と正規化のロジックは変更なし) ...
 if SCORE_TYPE == 'pmi' and N_GRAM_SIZE > 1:
     total_unigrams = sum(unigram_counts.values())
     total_ngrams = sum(ngram_counts.values())
