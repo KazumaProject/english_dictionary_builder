@@ -32,12 +32,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 4. Pythonスクリプトを実行してファイルを生成
-      #    スクリプト内のNLTKデータダウンロードもここで実行される
-      - name: Run script to generate n-gram file
-        run: python main.py # スクリプトのファイル名に合わせて変更してください
+      # 4. 必要なNLTKデータをダウンロード
+      - name: Download NLTK data
+        run: python -m nltk.downloader punkt punkt_tab
 
-      # 5. リリースを作成し、生成されたファイルをアップロード
+      # 5. Pythonスクリプトを実行してファイルを生成
+      - name: Run script to generate n-gram file
+        run: python main.py
+
+      # 6. リリースを作成し、生成されたファイルをアップロード
       - name: Create Release and Upload Asset
         uses: softprops/action-gh-release@v2
         with:

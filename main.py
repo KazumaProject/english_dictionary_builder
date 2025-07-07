@@ -9,7 +9,7 @@ from nltk.util import ngrams
 # --------------------------------------------------------------------------
 # ★★★ 設定項目 ★★★
 # 1. 解析したいN-gramのサイズを指定 (1: unigram, 2: bigram, 3: trigram)
-N_GRAM_SIZE = 2
+N_GRAM_SIZE = 1
 
 # 2. スコアの種類を選択 ('cost' または 'pmi')
 #   'cost': 高精度コスト（対数確率）。N-gramの珍しさを表す。
