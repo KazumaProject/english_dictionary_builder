@@ -36,7 +36,7 @@ unigram_counts = Counter()
 word_details = {}
 
 # (3) ★★★ 複数のデータセットを順番に処理 ★★★
-for config in DATASET_CONFIGS:
+for i, config in enumerate(DATASET_CONFIGS):
     dataset_name = config["name"]
     print(f"\nProcessing dataset: {dataset_name} (split: {config['split']})...")
 
@@ -50,12 +50,12 @@ for config in DATASET_CONFIGS:
 
     # [改善] isliceを使ってデータ数を制限
     texts_generator = (item[config["column"]] for item in itertools.islice(dataset, MAX_ITEMS_PER_DATASET))
-    
+
     # バッチサイズを設定
     batch_size = 500
 
     # nlp.pipeで処理。tqdmで進捗を表示
-    for doc in tqdm(nlp.pipe(texts_generator, batch_size=batch_size), desc=f"Processing {dataset_name}"):
+    for doc in tqdm(nlp.pipe(texts_generator, batch_size=batch_size), total=MAX_ITEMS_PER_DATASET, desc=f"Processing {dataset_name}"):
         words_to_count = []
         for token in doc:
             # is_alphaで英字のみを対象とし、stopワードを除外
@@ -67,8 +67,24 @@ for config in DATASET_CONFIGS:
                 # 固有名詞(PROPN)を優先して単語情報を保存
                 if lemma not in word_details or token.pos_ == 'PROPN':
                     word_details[lemma] = {'original': token.text, 'pos': token.pos_}
-        
+
         unigram_counts.update(words_to_count)
+
+    # ★★★ [NEW] MEMORY OPTIMIZATION ★★★
+    # Prune low-frequency words after processing each dataset (except the last one)
+    # to free up memory before the next, potentially larger dataset.
+    if i < len(DATASET_CONFIGS) - 1:
+        print(f"\nOptimizing memory: Pruning low-frequency words from '{dataset_name}'...")
+        # Identify lemmas with a count of 1, as they are least likely to reach MIN_FREQUENCY
+        lemmas_to_prune = [lemma for lemma, count in unigram_counts.items() if count == 1]
+
+        for lemma in tqdm(lemmas_to_prune, desc="Pruning single-occurrence words"):
+            if unigram_counts.get(lemma) == 1:
+                del unigram_counts[lemma]
+                if lemma in word_details:
+                    del word_details[lemma]
+        print(f"✅ Pruned {len(lemmas_to_prune):,} words to save memory.")
+
 
 print("\n✅ All datasets processed. Frequency counting complete.")
 
@@ -78,7 +94,7 @@ print(f"Calculating floating point '{SCORE_TYPE}' scores...")
 float_scores_data = []
 
 total_unigrams = sum(unigram_counts.values())
-for lemma, count in tqdm(unigram_counts.items(), desc="Calculating costs"):
+for lemma, count in tqdm(unigram_counts.items(), desc="Calculating scores"):
     # [改善] 最小出現回数でフィルタリング
     if count > MIN_FREQUENCY and lemma in word_details:
         cost_score = -np.log(count / total_unigrams)
@@ -105,7 +121,7 @@ if float_scores_data:
         final_data.append(item)
 else:
     final_data = []
-    
+
 # (6) 最終スコアが低い順にソート
 final_data.sort(key=lambda x: x['scaled_score'])
 
