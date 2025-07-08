@@ -1,7 +1,7 @@
-datasets
-numpy
-tqdm
+datasets>=2.19.0
+numpy>=1.24.0
+tqdm>=4.66.0
 nltk
 huggingface-hub
 pyarrow
-spacy
+spacy>=3.7.0

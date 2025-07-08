@@ -1,111 +1,182 @@
-# (0) ライブラリのインポート
-from datasets import load_dataset
-from collections import Counter
-import numpy as np
-from tqdm.auto import tqdm
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+Generate 1-gram cost scores and extract proper nouns.
+
+Outputs
+  - 1-grams_score_cost_pos_combined.txt
+  - proper_nouns.txt
+Budget is controlled by environment variables:
+  TIME_BUDGET_MIN (minutes)   – default 240
+  TOKEN_BUDGET    (tokens)    – default 0 (no limit)
+"""
+
+import os
+import time
+import re
+from collections import Counter, defaultdict
+from itertools import islice
+
 import spacy
+import numpy as np
+from datasets import load_dataset
+from tqdm.auto import tqdm
 
-# --------------------------------------------------------------------------
-# ★★★ 設定項目 ★★★
+# ---------------------------------------------------------------------
+# Settings
+# ---------------------------------------------------------------------
 N_GRAM_SIZE = 1
-SCORE_TYPE = 'cost'
+SCORE_TYPE = "cost"
+OUTPUT_FREQ_FILE = f"{N_GRAM_SIZE}-grams_score_{SCORE_TYPE}_pos_combined.txt"
+OUTPUT_PROPN_FILE = "proper_nouns.txt"
+
+# Data sources – 好みに応じて追加/削除
 DATASET_CONFIGS = [
-    # より小さい wikitext データセットでテスト
-    {"name": "wikitext", "config": "wikitext-103-v1", "split": "train", "column": "text"},
-    # {"name": "wikipedia", "config": "20220301.en", "split": "train", "column": "text"},
+    # Smaller sanity-check corpus
+    {
+        "name": "wikitext",
+        "config": "wikitext-103-v1",
+        "split": "train",
+        "column": "text",
+    },
+    # Full English Wikipedia dump (Jan-2025). 最新版に置き換えても可
+    {
+        "name": "wikimedia/wikipedia",
+        "config": "20250101.en",
+        "split": "train",
+        "column": "text",
+    },
 ]
-# --------------------------------------------------------------------------
 
-output_filename = f"{N_GRAM_SIZE}-grams_score_{SCORE_TYPE}_pos_combined.txt"
+# Budgets (env overrides)
+TIME_BUDGET_MIN = int(os.getenv("TIME_BUDGET_MIN", "240"))     # minutes
+TOKEN_BUDGET = int(os.getenv("TOKEN_BUDGET", "0"))             # 0 = unlimited
 
-# (1) spaCyモデルの読み込み
-# 高速化のために不要なパイプライン（parser, ner）を無効化
-print("Loading spaCy model...")
+# Batch & parallelism
+BATCH_SIZE = 1000          # ↑ RAM が許せば 2000 などへ
+N_PROCESS = 2              # GitHub Standard Runner は 2 vCPU
+
+# ---------------------------------------------------------------------
+# Helper – Proper-noun heuristic
+# ---------------------------------------------------------------------
+_CAMEL_RE = re.compile(r"[A-Z]")
+
+def looks_like_propn(tok) -> bool:
+    """
+    Heuristic:
+      * alphabetic
+      * either starts with upper-case inside sentence OR contains inner capitals
+        (e.g. iPhone, eBay, McDonald’s)
+    """
+    if not tok.is_alpha:
+        return False
+    # Exclude very first token of each streamed doc (often sentence start)
+    if tok.i == 0:
+        return False
+    txt = tok.text
+    return txt[0].isupper() or bool(_CAMEL_RE.search(txt[1:]))
+
+# ---------------------------------------------------------------------
+# Load spaCy – tagger のみ（parser/ner は無効化）
+# ---------------------------------------------------------------------
+print("📦 Loading spaCy model …")
 nlp = spacy.load("en_core_web_sm", disable=["parser", "ner"])
 print("✅ spaCy model loaded.")
 
-# (2) カウンターとデータ保持用辞書を初期化
-unigram_counts = Counter()
-word_details = {}
+# ---------------------------------------------------------------------
+# Counters
+# ---------------------------------------------------------------------
+unigram_counts: Counter[str] = Counter()
+propn_counts:   Counter[str] = Counter()
+word_meta: dict[str, dict[str, str]] = {}      # lower -> {original,pos}
 
-# (3) ★★★ 複数のデータセットを順番に処理 ★★★
-for config in DATASET_CONFIGS:
-    dataset_name = config["name"]
-    print(f"\nProcessing dataset: {dataset_name} (split: {config['split']})...")
+# ---------------------------------------------------------------------
+# Iterate datasets with budget checks
+# ---------------------------------------------------------------------
+start_time = time.perf_counter()
+tokens_seen = 0
 
-    dataset = load_dataset(
-        dataset_name,
-        config.get("config"),
-        split=config["split"],
+for cfg in DATASET_CONFIGS:
+    print(f"\n🔄 Processing {cfg['name']} ({cfg['split']}) …")
+    ds = load_dataset(
+        cfg["name"],
+        cfg.get("config"),
+        split=cfg["split"],
         streaming=True,
-        trust_remote_code=True
+        trust_remote_code=True,
     )
+    texts = (item[cfg["column"]] for item in ds)
 
-    # nlp.pipeを使用してテキストを効率的に一括処理
-    # documentsからテキストを抽出するジェネレータを作成
-    texts_generator = (item[config["column"]] for item in dataset)
-    
-    # バッチサイズを設定 (マシンのメモリに応じて調整)
-    batch_size = 500
+    for doc in tqdm(
+        nlp.pipe(texts, batch_size=BATCH_SIZE, n_process=N_PROCESS),
+        desc=f"spaCy ({cfg['name']})",
+    ):
+        tokens_seen += len(doc)
 
-    # nlp.pipeで処理。tqdmで進捗を表示
-    for doc in tqdm(nlp.pipe(texts_generator, batch_size=batch_size), desc=f"Processing {dataset_name}"):
-        words_to_count = []
-        for token in doc:
-            # is_alphaで英字のみを対象とし、stopワードを除外
-            if token.is_alpha and not token.is_stop:
-                lower_word = token.lower_
-                words_to_count.append(lower_word)
+        batch_words = []
+        for tok in doc:
+            if tok.is_alpha and not tok.is_stop:
+                lower = tok.lower_
+                batch_words.append(lower)
 
-                # 固有名詞(PROPN)を優先して単語情報を保存
-                if lower_word not in word_details or token.pos_ == 'PROPN':
-                    word_details[lower_word] = {'original': token.text, 'pos': token.pos_}
-        
-        unigram_counts.update(words_to_count)
+                # meta
+                if lower not in word_meta or tok.pos_ == "PROPN":
+                    word_meta[lower] = {"original": tok.text, "pos": tok.pos_}
 
-print("\n✅ All datasets processed. Frequency counting complete.")
+                # proper-noun collection
+                if tok.pos_ == "PROPN" or looks_like_propn(tok):
+                    propn_counts[lower] += 1
 
+        unigram_counts.update(batch_words)
 
-# (4) スコアを計算 (浮動小数点)
-print(f"Calculating floating point '{SCORE_TYPE}' scores...")
-float_scores_data = []
+        # Budget check
+        elapsed_min = (time.perf_counter() - start_time) / 60
+        if (TIME_BUDGET_MIN and elapsed_min >= TIME_BUDGET_MIN) or \
+           (TOKEN_BUDGET and tokens_seen >= TOKEN_BUDGET):
+            print(f"⏹️  Budget reached "
+                  f"({elapsed_min:.1f} min / {tokens_seen:_} tok). Stopping.")
+            break
+    else:
+        # for-loop finished naturally → continue next dataset
+        continue
+    break   # inner break → exit outer loop
 
-total_unigrams = sum(unigram_counts.values())
-for lower_word, count in tqdm(unigram_counts.items(), desc="Calculating costs"):
-    if count > 0 and lower_word in word_details:
-        cost_score = -np.log(count / total_unigrams)
-        details = word_details[lower_word]
-        float_scores_data.append({
-            "lower": lower_word,
-            "original": details['original'],
-            "pos": details['pos'],
-            "score": cost_score
-        })
+print("\n✅ Counting finished.")
 
-# (5) スコアを0-65535の範囲に正規化
-print("Normalizing scores to short integer range (0-65535)...")
-if float_scores_data:
-    scores = [item['score'] for item in float_scores_data]
-    min_score, max_score = min(scores), max(scores)
-    score_range = max_score - min_score
-    if score_range == 0: score_range = 1
+# ---------------------------------------------------------------------
+# Cost score → 0–65535
+# ---------------------------------------------------------------------
+print("🧮 Calculating scores …")
+total = sum(unigram_counts.values())
+float_scores = []
+for w, cnt in unigram_counts.items():
+    if w not in word_meta or cnt == 0:
+        continue
+    cost = -np.log(cnt / total)
+    float_scores.append((w, cost))
 
-    final_data = []
-    for item in float_scores_data:
-        scaled_score = int(((item['score'] - min_score) / score_range) * 65535)
-        item['scaled_score'] = scaled_score
-        final_data.append(item)
-else:
-    final_data = []
-    
-# (6) 最終スコアが低い順にソート
-final_data.sort(key=lambda x: x['scaled_score'])
+if not float_scores:
+    raise RuntimeError("No data collected – check budgets / filters.")
 
-# (7) 結果をファイルに保存
-print(f"Saving results to '{output_filename}'...")
-with open(output_filename, "w", encoding="utf-8") as f:
+scores_only = [c for _, c in float_scores]
+min_s, max_s = min(scores_only), max(scores_only)
+rng = max(max_s - min_s, 1e-9)
+scale = lambda x: int(((x - min_s) / rng) * 65535)
+
+# ---------------------------------------------------------------------
+# Write files
+# ---------------------------------------------------------------------
+print(f"💾 Writing {OUTPUT_FREQ_FILE} …")
+with open(OUTPUT_FREQ_FILE, "w", encoding="utf-8") as f:
     f.write("input_word\toutput_word\tpos_tag\tscore\n")
-    for item in final_data:
-        f.write(f"{item['lower']}\t{item['original']}\t{item['pos']}\t{item['scaled_score']}\n")
+    for w, s in sorted(float_scores, key=lambda t: scale(t[1])):
+        meta = word_meta[w]
+        f.write(f"{w}\t{meta['original']}\t{meta['pos']}\t{scale(s)}\n")
 
-print(f"✅ Done! Saved combined scores with POS tags to '{output_filename}'")
+print(f"💾 Writing {OUTPUT_PROPN_FILE} …")
+with open(OUTPUT_PROPN_FILE, "w", encoding="utf-8") as f:
+    f.write("proper_noun\tcount\n")
+    for w, c in propn_counts.most_common():
+        f.write(f"{w}\t{c}\n")
+
+print("🎉 Done.")
