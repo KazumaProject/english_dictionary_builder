@@ -2,3 +2,5 @@ datasets
 numpy
 tqdm
 nltk
+huggingface-hub
+pyarrow
