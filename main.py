@@ -1,120 +1,119 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-High-speed n-gram scorer
- - spaCy tagger/lemmatizer を無効化
- - マルチプロセス (n_process > 1)
- - PROPN 判定は簡易ヒューリスティック
-"""
-
-from collections import Counter
-from itertools import islice
-import math
-import pathlib
-import sys
-
-import numpy as np
+# (0) ライブラリのインポート
 from datasets import load_dataset
+from collections import Counter
+import numpy as np
 from tqdm.auto import tqdm
 import spacy
-from spacy.attrs import LOWER, IS_ALPHA, IS_STOP
+import itertools
 
 # --------------------------------------------------------------------------
 # ★★★ 設定項目 ★★★
 N_GRAM_SIZE = 1
-SCORE_TYPE = "cost"          # 現状 'cost' 固定
-SAMPLE_RATE = 1.0            # 0.1 → 10 % サンプリング
-BATCH_SIZE = 4000            # 1 プロセスあたりのバッチ
-N_PROCESS = 4                # CPU コア数に合わせて変更
+SCORE_TYPE = 'cost'
 DATASET_CONFIGS = [
-    {
-        "name": "wikitext",
-        "config": "wikitext-103-v1",
-        "split": "train",
-        "column": "text",
-    },
+    {"name": "wikitext", "config": "wikitext-103-v1", "split": "train", "column": "text"},
+    {"name": "wikipedia", "config": "20220301.en", "split": "train", "column": "text"},
 ]
+# [改善] 最小出現回数のしきい値を設定
+MIN_FREQUENCY = 5
+
+# [改善] GitHub Actionsの無料枠で実行するための最大アイテム数
+# この値を調整して実行時間を6時間以内に収める
+# まずは10万~50万件で試し、実行時間を見て調整してください
+MAX_ITEMS_PER_DATASET = 500_000
 # --------------------------------------------------------------------------
 
 output_filename = f"{N_GRAM_SIZE}-grams_score_{SCORE_TYPE}_pos_combined.txt"
 
-# (0) spaCy 初期化（Tokenizer のみ）
-print("Loading spaCy tokenizer …")
-nlp = spacy.load("en_core_web_sm", disable=["tagger", "parser",
-                                            "lemmatizer", "ner"])
-print("✅ tokenizer loaded.")
+# (1) spaCyモデルの読み込み
+print("Loading spaCy model...")
+# [改善] より高精度なモデルを使用
+nlp = spacy.load("en_core_web_lg", disable=["parser", "ner"])
+print("✅ spaCy model loaded.")
 
-# (1) カウンターとメタ情報
-unigram_counts: Counter[str] = Counter()
-word_details: dict[str, dict[str, str]] = {}
+# (2) カウンターとデータ保持用辞書を初期化
+unigram_counts = Counter()
+word_details = {}
 
-# (2) データセットごとに処理
-for cfg in DATASET_CONFIGS:
-    print(f"\nProcessing dataset: {cfg['name']} / {cfg['split']}")
-    ds = load_dataset(
-        cfg["name"],
-        cfg.get("config"),
-        split=cfg["split"],
+# (3) ★★★ 複数のデータセットを順番に処理 ★★★
+for config in DATASET_CONFIGS:
+    dataset_name = config["name"]
+    print(f"\nProcessing dataset: {dataset_name} (split: {config['split']})...")
+
+    dataset = load_dataset(
+        dataset_name,
+        config.get("config"),
+        split=config["split"],
         streaming=True,
-        trust_remote_code=True,
+        trust_remote_code=True
     )
 
-    # ストリーミング Dataset → サンプリングしつつジェネレータ化
-    def _texts():
-        for idx, item in enumerate(ds):
-            if SAMPLE_RATE < 1.0 and (idx % int(1 / SAMPLE_RATE)):
-                continue
-            yield item[cfg["column"]]
+    # [改善] isliceを使ってデータ数を制限
+    texts_generator = (item[config["column"]] for item in itertools.islice(dataset, MAX_ITEMS_PER_DATASET))
+    
+    # バッチサイズを設定
+    batch_size = 500
 
-    texts_generator = _texts()
-
-    # spaCy をマルチプロセスで回す
-    for doc in tqdm(
-        nlp.pipe(texts_generator,
-                 batch_size=BATCH_SIZE,
-                 n_process=N_PROCESS),
-        desc=f"spaCy ({cfg['name']})",
-    ):
-        # ndarray ベースで高速抽出
-        arr = doc.to_array([LOWER, IS_ALPHA, IS_STOP])
-        lowers = []
-        for lower_id, is_alpha, is_stop in arr:
-            if is_alpha and not is_stop:
-                lowers.append(lower_id)
-
-        # カウンタ更新
-        unigram_counts.update(lowers)
-
-        # PROPN 相当かどうか（先頭大文字ヒューリスティック）
+    # nlp.pipeで処理。tqdmで進捗を表示
+    for doc in tqdm(nlp.pipe(texts_generator, batch_size=batch_size), desc=f"Processing {dataset_name}"):
+        words_to_count = []
         for token in doc:
-            lw = token.lower_
-            if lw not in word_details:
-                is_prop = token.text[:1].isupper()
-                word_details[lw] = {
-                    "original": token.text,
-                    "pos": "PROPN" if is_prop else "X",
-                }
+            # is_alphaで英字のみを対象とし、stopワードを除外
+            if token.is_alpha and not token.is_stop:
+                # [改善] .lower_ の代わりに .lemma_ を使用して見出し語化
+                lemma = token.lemma_
+                words_to_count.append(lemma)
 
-# (3) スコア計算
-print("\nCalculating scores …")
-total = sum(unigram_counts.values())
-float_scores = {
-    lw: -math.log(c / total) for lw, c in unigram_counts.items() if c > 0
-}
+                # 固有名詞(PROPN)を優先して単語情報を保存
+                if lemma not in word_details or token.pos_ == 'PROPN':
+                    word_details[lemma] = {'original': token.text, 'pos': token.pos_}
+        
+        unigram_counts.update(words_to_count)
 
-# (4) 0–65535 スケールに正規化
-min_s, max_s = min(float_scores.values()), max(float_scores.values())
-rng = max_s - min_s or 1.0
-scaled = {
-    lw: int(((s - min_s) / rng) * 65535) for lw, s in float_scores.items()
-}
+print("\n✅ All datasets processed. Frequency counting complete.")
 
-# (5) 出力
-print(f"Writing → {output_filename}")
+
+# (4) スコアを計算 (浮動小数点)
+print(f"Calculating floating point '{SCORE_TYPE}' scores...")
+float_scores_data = []
+
+total_unigrams = sum(unigram_counts.values())
+for lemma, count in tqdm(unigram_counts.items(), desc="Calculating costs"):
+    # [改善] 最小出現回数でフィルタリング
+    if count > MIN_FREQUENCY and lemma in word_details:
+        cost_score = -np.log(count / total_unigrams)
+        details = word_details[lemma]
+        float_scores_data.append({
+            "lower": lemma,
+            "original": details['original'],
+            "pos": details['pos'],
+            "score": cost_score
+        })
+
+# (5) スコアを0-65535の範囲に正規化
+print("Normalizing scores to short integer range (0-65535)...")
+if float_scores_data:
+    scores = [item['score'] for item in float_scores_data]
+    min_score, max_score = min(scores), max(scores)
+    score_range = max_score - min_score
+    if score_range == 0: score_range = 1
+
+    final_data = []
+    for item in float_scores_data:
+        scaled_score = int(((item['score'] - min_score) / score_range) * 65535)
+        item['scaled_score'] = scaled_score
+        final_data.append(item)
+else:
+    final_data = []
+    
+# (6) 最終スコアが低い順にソート
+final_data.sort(key=lambda x: x['scaled_score'])
+
+# (7) 結果をファイルに保存
+print(f"Saving results to '{output_filename}'...")
 with open(output_filename, "w", encoding="utf-8") as f:
     f.write("input_word\toutput_word\tpos_tag\tscore\n")
-    for lw, score in sorted(scaled.items(), key=lambda x: x[1]):
-        meta = word_details.get(lw, {"original": lw, "pos": "X"})
-        f.write(f"{lw}\t{meta['original']}\t{meta['pos']}\t{score}\n")
+    for item in final_data:
+        f.write(f"{item['lower']}\t{item['original']}\t{item['pos']}\t{item['scaled_score']}\n")
 
-print("✅ Done!")
+print(f"✅ Done! Saved combined scores with POS tags to '{output_filename}'")
