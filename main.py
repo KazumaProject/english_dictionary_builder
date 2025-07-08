@@ -1,69 +1,75 @@
 # (0) ライブラリのインポート
-from datasets import load_dataset
 from collections import Counter
 import numpy as np
 from tqdm.auto import tqdm
-import spacy
+import nltk
+from nltk.corpus import stopwords
+from datasets import load_dataset
 
 # --------------------------------------------------------------------------
 # ★★★ 設定項目 ★★★
 N_GRAM_SIZE = 1
 SCORE_TYPE = 'cost'
-DATASET_CONFIGS = [
-    # より小さい wikitext データセットでテスト
-    {"name": "wikitext", "config": "wikitext-103-v1", "split": "train", "column": "text"},
-    # {"name": "wikipedia", "config": "20220301.en", "split": "train", "column": "text"},
-]
 # --------------------------------------------------------------------------
 
+# --- 設定チェックとファイル名設定 ---
+if N_GRAM_SIZE != 1:
+    print("Warning: This script is optimized for N_GRAM_SIZE = 1 to include POS tags.")
+    print("For N-grams > 1, the output will only be the N-gram and its score.")
 output_filename = f"{N_GRAM_SIZE}-grams_score_{SCORE_TYPE}_pos_combined.txt"
 
-# (1) spaCyモデルの読み込み
-# 高速化のために不要なパイプライン（parser, ner）を無効化
-print("Loading spaCy model...")
-nlp = spacy.load("en_core_web_sm", disable=["parser", "ner"])
-print("✅ spaCy model loaded.")
+# --- NLTKデータ準備 ---
+# averaged_perceptron_tagger (品詞推定) と stopwords を追加
+required_nltk_packages = ['punkt', 'averaged_perceptron_tagger', 'stopwords']
+for package in required_nltk_packages:
+    try:
+        # パッケージの種類に応じて検索パスを切り替え
+        if package == 'punkt':
+            nltk.data.find(f'tokenizers/{package}')
+        elif package == 'averaged_perceptron_tagger':
+            nltk.data.find(f'taggers/{package}')
+        else:
+            nltk.data.find(f'corpora/{package}')
+    except LookupError:
+        print(f"Downloading NLTK package: {package}")
+        nltk.download(package, quiet=True)
 
-# (2) カウンターとデータ保持用辞書を初期化
+# (1) ストップワードとカウンターの準備
+print("Loading NLTK resources...")
+stop_words = set(stopwords.words('english'))
 unigram_counts = Counter()
-word_details = {}
+word_details = {} # 元の単語の形と品詞を保存する辞書
+print("✅ NLTK resources loaded.")
 
-# (3) ★★★ 複数のデータセットを順番に処理 ★★★
-for config in DATASET_CONFIGS:
-    dataset_name = config["name"]
-    print(f"\nProcessing dataset: {dataset_name} (split: {config['split']})...")
+# (2) データセットの準備 (ストリーミング)
+print("Loading dataset metadata...")
+# ストリーミングではlen()が使えないため、おおよそのサイズを手動で設定
+# wikitext-103-v1のtrainスプリットには約180万ドキュメントがある
+total_docs = 1810350
+dataset = load_dataset("wikitext", "wikitext-103-v1", split="train", streaming=True, trust_remote_code=True)
 
-    dataset = load_dataset(
-        dataset_name,
-        config.get("config"),
-        split=config["split"],
-        streaming=True,
-        trust_remote_code=True
-    )
-
-    # nlp.pipeを使用してテキストを効率的に一括処理
-    # documentsからテキストを抽出するジェネレータを作成
-    texts_generator = (item[config["column"]] for item in dataset)
+# (3) ★★★ 単語、品詞をカウント ★★★
+print(f"Starting to count {N_GRAM_SIZE}-grams with POS tags...")
+for item in tqdm(dataset, total=total_docs, desc="Docs processed"):
+    text = item["text"]
+    if not text.strip():
+        continue
     
-    # バッチサイズを設定 (マシンのメモリに応じて調整)
-    batch_size = 500
+    tokens = nltk.word_tokenize(text)
+    # 品詞を推定
+    tagged_tokens = nltk.pos_tag(tokens)
 
-    # nlp.pipeで処理。tqdmで進捗を表示
-    for doc in tqdm(nlp.pipe(texts_generator, batch_size=batch_size), desc=f"Processing {dataset_name}"):
-        words_to_count = []
-        for token in doc:
-            # is_alphaで英字のみを対象とし、stopワードを除外
-            if token.is_alpha and not token.is_stop:
-                lower_word = token.lower_
-                words_to_count.append(lower_word)
+    for word, tag in tagged_tokens:
+        # アルファベットのみで、ストップワードでない単語を対象
+        if word.isalpha() and word.lower() not in stop_words:
+            lower_word = word.lower()
+            unigram_counts[lower_word] += 1
+            
+            # 固有名詞(NNP)を優先して単語情報を保存
+            if lower_word not in word_details or tag == 'NNP':
+                word_details[lower_word] = {'original': word, 'pos': tag}
 
-                # 固有名詞(PROPN)を優先して単語情報を保存
-                if lower_word not in word_details or token.pos_ == 'PROPN':
-                    word_details[lower_word] = {'original': token.text, 'pos': token.pos_}
-        
-        unigram_counts.update(words_to_count)
-
-print("\n✅ All datasets processed. Frequency counting complete.")
+print("✅ Frequency counting complete.")
 
 
 # (4) スコアを計算 (浮動小数点)
@@ -73,6 +79,7 @@ float_scores_data = []
 total_unigrams = sum(unigram_counts.values())
 for lower_word, count in tqdm(unigram_counts.items(), desc="Calculating costs"):
     if count > 0 and lower_word in word_details:
+        # コストを計算
         cost_score = -np.log(count / total_unigrams)
         details = word_details[lower_word]
         float_scores_data.append({
@@ -88,7 +95,7 @@ if float_scores_data:
     scores = [item['score'] for item in float_scores_data]
     min_score, max_score = min(scores), max(scores)
     score_range = max_score - min_score
-    if score_range == 0: score_range = 1
+    if score_range == 0: score_range = 1 # ゼロ除算を防止
 
     final_data = []
     for item in float_scores_data:
@@ -104,6 +111,7 @@ final_data.sort(key=lambda x: x['scaled_score'])
 # (7) 結果をファイルに保存
 print(f"Saving results to '{output_filename}'...")
 with open(output_filename, "w", encoding="utf-8") as f:
+    # ヘッダーを書き込み
     f.write("input_word\toutput_word\tpos_tag\tscore\n")
     for item in final_data:
         f.write(f"{item['lower']}\t{item['original']}\t{item['pos']}\t{item['scaled_score']}\n")
