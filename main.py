@@ -18,7 +18,7 @@ SCORE_TYPE = 'cost'
 # 3. ★★★ 使用するデータセットのリスト ★★★
 DATASET_CONFIGS = [
     {"name": "wikipedia", "config": "20220301.en", "split": "train", "column": "text"},
-    {"name": "bookcorpus", "config": None, "split": "train", "column": "text"},
+    # {"name": "bookcorpus", "config": None, "split": "train", "column": "text"},
     # C4データセットの一部（最初の1%）を追加。'1%'を'5%'や'100000'（行数）などに変更可能
     # {"name": "c4", "config": "en", "split": "train[:200000]", "column": "text"},
 ]
