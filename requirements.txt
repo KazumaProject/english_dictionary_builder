@@ -4,3 +4,4 @@ tqdm
 nltk
 huggingface-hub
 pyarrow
+spacy
