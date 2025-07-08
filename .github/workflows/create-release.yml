@@ -1,50 +1,56 @@
-name: Create and Release N-gram File
+# .github/workflows/build-ut.yml
+name: Build single-source UT dictionaries
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'
-
-env:
-  # 4 hours hard cap
-  TIME_BUDGET_MIN: 240
-  # (~3.5 × 10⁸ tokens) – 調整可。0 なら無制限
-  TOKEN_BUDGET: 350000000
+  workflow_dispatch:      # 手動実行
+  push:                   # または main への push
+    branches: [ main ]
 
 jobs:
-  build-and-release:
+  build:
     runs-on: ubuntu-latest
-    timeout-minutes: 360   # GH 上限 (6h) 保険
+
+    strategy:
+      matrix:
+        src: [jawiki, personal_names, place_names, neologd, sudachidict]
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # --- HuggingFace cache (optional but加速) ---
-      - name: Cache HF datasets
-        uses: actions/cache@v4
+      # 依存 Python が必要な場合は有効に
+      - uses: actions/setup-python@v5
         with:
-          path: ~/.cache/huggingface
-          key: hf-datasets-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
+          python-version: "3.11"
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      - name: Install dependencies & spaCy model
+      - name: Clone merge-ut-dictionaries
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          python -m spacy download en_core_web_sm
+          git clone --depth 1 https://github.com/utuhiro78/merge-ut-dictionaries.git
 
-      - name: Generate n-gram & proper-noun files
-        run: python main.py
+      - name: Build ${{ matrix.src }} only
+        working-directory: merge-ut-dictionaries/src/merge
+        run: |
+          # ------ ① すべて false で初期化 ------
+          export alt_cannadic="false"
+          export edict2="false"
+          export jawiki="false"
+          export neologd="false"
+          export personal_names="false"
+          export place_names="false"
+          export skk_jisyo="false"
+          export sudachidict="false"
 
-      - name: Archive artifacts
-        run: zip artifacts.zip *.txt
+          # ------ ② 今回だけ true に ------
+          export ${{ matrix.src }}="true"
 
-      - name: Create Release and Upload Asset
-        uses: softprops/action-gh-release@v2
+          # ------ ③ make.sh 実行 ------
+          sh make.sh
+
+          # make.sh の最終成果物は mozcdic-ut.txt として
+          # カレントに置かれるので、わかりやすい名前へ
+          mv mozcdic-ut.txt ../../mozcdic-ut-${{ matrix.src }}.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          files: artifacts.zip
+          name: mozcdic-ut-${{ matrix.src }}
+          path: merge-ut-dictionaries/mozcdic-ut-${{ matrix.src }}.txt
