@@ -26,8 +26,9 @@ jobs:
           pip install -r requirements.txt
 
       - name: Download NLTK data
-        # 必要なNLTKデータをすべてダウンロード
-        run: python -m nltk.downloader punkt punkt_tab words averaged_perceptron_tagger
+        # ▼▼▼ こちらを修正しました ▼▼▼
+        # エラーメッセージに従い、'averaged_perceptron_tagger_eng' をダウンロードします
+        run: python -m nltk.downloader punkt punkt_tab words averaged_perceptron_tagger_eng
 
       - name: Run script to generate n-gram file
         run: python main.py
