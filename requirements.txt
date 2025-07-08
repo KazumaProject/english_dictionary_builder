@@ -1,7 +1,4 @@
-datasets
-numpy
-tqdm
-nltk
-huggingface-hub
-pyarrow
-spacy
+datasets>=2.19
+spacy>=3.7
+tqdm>=4.66
+numpy>=1.26
