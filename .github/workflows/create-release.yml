@@ -23,17 +23,15 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # requirements.txtからインストール
           pip install -r requirements.txt
 
       - name: Download NLTK data
-        # ▼▼▼ 'averaged_perceptron_tagger' を追加 ▼▼▼
-        run: python -m nltk.downloader punkt words averaged_perceptron_tagger
+        # 必要なNLTKデータをすべてダウンロード
+        run: python -m nltk.downloader punkt punkt_tab words averaged_perceptron_tagger
 
       - name: Run script to generate n-gram file
         run: python main.py
 
-      # ▼▼▼ このステップを修正 ▼▼▼
       - name: Archive production artifacts
         run: |
           # Pythonスクリプトで定義されたファイル名と一致させる
@@ -41,7 +39,6 @@ jobs:
           # ZIPファイル名を設定
           zip "${ARTIFACT_FILE%.txt}.zip" "$ARTIFACT_FILE"
 
-      # ▼▼▼ 'files' の指定を *.zip に変更 ▼▼▼
       - name: Create Release and Upload Asset
         uses: softprops/action-gh-release@v2
         with:

@@ -30,11 +30,10 @@ if N_GRAM_SIZE > 1:
 output_filename = f"{N_GRAM_SIZE}-grams_score_{SCORE_TYPE}_pos_combined.txt"
 
 # --- NLTKデータ準備 ---
-### 変更点 ###: POSタギング用の'averaged_perceptron_tagger'を追加
-required_nltk_packages = ['punkt', 'words', 'averaged_perceptron_tagger']
+required_nltk_packages = ['punkt', 'words', 'averaged_perceptron_tagger', 'punkt_tab']
 for package in required_nltk_packages:
     try:
-        if package == 'punkt':
+        if package == 'punkt' or package == 'punkt_tab':
             nltk.data.find(f'tokenizers/{package}')
         elif package == 'averaged_perceptron_tagger':
             nltk.data.find(f'taggers/{package}.zip')
@@ -43,18 +42,11 @@ for package in required_nltk_packages:
     except LookupError:
         nltk.download(package)
 
-# (1) 英単語辞書をセットとして読み込み（今回は使用しませんが、参考のために残します）
-# print("Loading English dictionary...")
-# english_words = set(nltk.words())
-# print(f"✅ Loaded {len(english_words)} words from English dictionary.")
-
-
-# (2) カウンターとデータ保持用辞書を初期化
+# (1) カウンターとデータ保持用辞書を初期化
 unigram_counts = Counter()
-### 変更点 ###: 単語の元情報（大文字・小文字、品詞）を保持する辞書
-word_details = {}
+word_details = {} # 単語の元情報（大文字・小文字、品詞）を保持する辞書
 
-# (3) ★★★ 複数のデータセットを順番に処理 ★★★
+# (2) ★★★ 複数のデータセットを順番に処理 ★★★
 for config in DATASET_CONFIGS:
     dataset_name = config["name"]
     print(f"\nProcessing dataset: {dataset_name} (split: {config['split']})...")
@@ -70,7 +62,6 @@ for config in DATASET_CONFIGS:
     )
 
     for item in tqdm(dataset, total=total_docs, desc=f"Processing {dataset_name}"):
-        ### 変更点 ###: テキストを小文字にせず、POSタギングを実行
         text = item[config["column"]]
         # word_tokenizeは文単位での処理が推奨されるため、文に分割
         sentences = nltk.sent_tokenize(text)
@@ -99,7 +90,7 @@ for config in DATASET_CONFIGS:
 print("\n✅ All datasets processed. Frequency counting complete.")
 
 
-# (4) スコアを計算 (浮動小数点)
+# (3) スコアを計算 (浮動小数点)
 print(f"Calculating floating point '{SCORE_TYPE}' scores...")
 float_scores_data = []
 
@@ -119,7 +110,7 @@ for lower_word, count in tqdm(unigram_counts.items(), desc="Calculating costs"):
             "score": cost_score
         })
 
-# (5) スコアを0-65535の範囲に正規化
+# (4) スコアを0-65535の範囲に正規化
 print("Normalizing scores to short integer range (0-65535)...")
 if float_scores_data:
     scores = [item['score'] for item in float_scores_data]
@@ -135,10 +126,10 @@ if float_scores_data:
 else:
     final_data = []
     
-# (6) 最終スコアが低い順にソート
+# (5) 最終スコアが低い順にソート
 final_data.sort(key=lambda x: x['scaled_score'])
 
-# (7) 結果をファイルに保存
+# (6) 結果をファイルに保存
 print(f"Saving results to '{output_filename}'...")
 with open(output_filename, "w", encoding="utf-8") as f:
     # ヘッダーを書き込む
