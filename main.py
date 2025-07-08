@@ -10,7 +10,9 @@ import spacy
 N_GRAM_SIZE = 1
 SCORE_TYPE = 'cost'
 DATASET_CONFIGS = [
-    {"name": "wikipedia", "config": "20220301.en", "split": "train", "column": "text"},
+    # より小さい wikitext データセットでテスト
+    {"name": "wikitext", "config": "wikitext-103-v1", "split": "train", "column": "text"},
+    # {"name": "wikipedia", "config": "20220301.en", "split": "train", "column": "text"},
 ]
 # --------------------------------------------------------------------------
 
