@@ -5,46 +5,36 @@ on:
     tags:
       - 'v*.*.*'
 
-env:
-  # 4 hours hard cap
-  TIME_BUDGET_MIN: 240
-  # (~3.5 × 10⁸ tokens) – 調整可。0 なら無制限
-  TOKEN_BUDGET: 350000000
-
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
-    timeout-minutes: 360   # GH 上限 (6h) 保険
+    permissions:
+      contents: write
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
-
-      # --- HuggingFace cache (optional but加速) ---
-      - name: Cache HF datasets
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/huggingface
-          key: hf-datasets-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Install dependencies & spaCy model
+      - name: Install dependencies and spaCy model
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           python -m spacy download en_core_web_sm
 
-      - name: Generate n-gram & proper-noun files
+      - name: Run script to generate n-gram file
         run: python main.py
 
-      - name: Archive artifacts
-        run: zip artifacts.zip *.txt
+      - name: Archive production artifacts
+        run: |
+          ARTIFACT_FILE="1-grams_score_cost_pos_combined.txt"
+          zip "${ARTIFACT_FILE%.txt}.zip" "$ARTIFACT_FILE"
 
       - name: Create Release and Upload Asset
         uses: softprops/action-gh-release@v2
         with:
-          files: artifacts.zip
+          files: ./*.zip
