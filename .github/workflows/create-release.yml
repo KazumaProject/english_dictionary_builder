@@ -1,70 +1,40 @@
-name: Build N-gram and Release
+name: Create and Release N-gram File
 
 on:
   push:
-    tags: ['v*.*.*']   # v1.0.0 等で実行
+    tags:
+      - 'v*.*.*'
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        part: [0, 1, 2, 3]      # ← 並列数。増減させる場合は NUM_PARTS と合わせる
-    runs-on: ubuntu-latest
-    env:
-      NUM_PARTS: 4
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      - name: Install deps
-        run: |
-          python -m pip install --upgrade pip
-          pip install datasets tqdm spacy numpy
-          python -m spacy download en_core_web_sm
-
-      - name: Run worker
-        env:
-          PART: ${{ matrix.part }}
-        run: python worker.py
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: counts
-          path: counts_part${{ matrix.part }}.txt
-
-  merge:
-    needs: build
+  build-and-release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write        # Release への書き込み権限
-    steps:
-      - uses: actions/checkout@v4
+      contents: write
 
-      - uses: actions/setup-python@v5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Install merge deps
+      - name: Install dependencies and spaCy model
         run: |
-          python -m pip install --upgrade pip numpy
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download en_core_web_sm
 
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: counts
-          path: .
+      - name: Run script to generate n-gram file
+        run: python main.py
 
-      - name: Merge & score
-        run: python merge.py
+      - name: Archive production artifacts
+        run: |
+          ARTIFACT_FILE="1-grams_score_cost_pos_combined.txt"
+          zip "${ARTIFACT_FILE%.txt}.zip" "$ARTIFACT_FILE"
 
-      - name: Zip final file
-        run: zip ngrams.zip 1-grams_score_cost_pos_combined.txt
-
-      - name: Create Release and upload asset
+      - name: Create Release and Upload Asset
         uses: softprops/action-gh-release@v2
         with:
-          files: ngrams.zip
+          files: ./*.zip
