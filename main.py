@@ -10,11 +10,10 @@ import spacy
 N_GRAM_SIZE = 1
 SCORE_TYPE = 'cost'
 DATASET_CONFIGS = [
-    # より小さい wikitext データセットでテスト
-    {"name": "bookcorpusopen", "config": "plain_text", "split": "train", "column": "text"},
+    # ユーザー指定の新しいbookcorpusデータセットを使用
+    {"name": "rojagtap/bookcorpus", "config": None, "split": "train", "column": "text"},
     # {"name": "openwebtext", "config": None, "split": "train", "column": "text"},
     # {"name": "wikitext", "config": "wikitext-103-v1", "split": "train", "column": "text"},
-    # {"name": "wikipedia", "config": "20220301.en", "split": "train", "column": "text"},
 ]
 # --------------------------------------------------------------------------
 
@@ -35,13 +34,20 @@ for config in DATASET_CONFIGS:
     dataset_name = config["name"]
     print(f"\nProcessing dataset: {dataset_name} (split: {config['split']})...")
 
-    dataset = load_dataset(
-        dataset_name,
-        config.get("config"),
-        split=config["split"],
-        streaming=True,
-        trust_remote_code=True
-    )
+    # configがNoneの場合は、引数から除外する
+    load_args = {
+        "path": dataset_name,
+        "split": config["split"],
+        "streaming": True,
+        "trust_remote_code": True
+    }
+    if config.get("config"):
+        load_args["name"] = config.get("config")
+
+    # load_datasetの呼び出し方を修正
+    # 'path' と 'name' を明確に区別する
+    dataset = load_dataset(path=dataset_name, name=config.get("config"), split=config["split"], streaming=True, trust_remote_code=True)
+
 
     # nlp.pipeを使用してテキストを効率的に一括処理
     # documentsからテキストを抽出するジェネレータを作成
@@ -73,16 +79,18 @@ print(f"Calculating floating point '{SCORE_TYPE}' scores...")
 float_scores_data = []
 
 total_unigrams = sum(unigram_counts.values())
-for lower_word, count in tqdm(unigram_counts.items(), desc="Calculating costs"):
-    if count > 0 and lower_word in word_details:
-        cost_score = -np.log(count / total_unigrams)
-        details = word_details[lower_word]
-        float_scores_data.append({
-            "lower": lower_word,
-            "original": details['original'],
-            "pos": details['pos'],
-            "score": cost_score
-        })
+if total_unigrams > 0:
+    for lower_word, count in tqdm(unigram_counts.items(), desc="Calculating costs"):
+        if count > 0 and lower_word in word_details:
+            # ゼロ除算を避ける
+            cost_score = -np.log(count / total_unigrams)
+            details = word_details[lower_word]
+            float_scores_data.append({
+                "lower": lower_word,
+                "original": details['original'],
+                "pos": details['pos'],
+                "score": cost_score
+            })
 
 # (5) スコアを0-65535の範囲に正規化
 print("Normalizing scores to short integer range (0-65535)...")
