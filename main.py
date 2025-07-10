@@ -11,7 +11,8 @@ N_GRAM_SIZE = 1
 SCORE_TYPE = 'cost'
 DATASET_CONFIGS = [
     # より小さい wikitext データセットでテスト
-    {"name": "bookcorpus", "config": None, "split": "train", "column": "text"},
+    {"name": "bookcorpusopen", "config": "plain_text", "split": "train", "column": "text"},
+    # {"name": "openwebtext", "config": None, "split": "train", "column": "text"},
     # {"name": "wikitext", "config": "wikitext-103-v1", "split": "train", "column": "text"},
     # {"name": "wikipedia", "config": "20220301.en", "split": "train", "column": "text"},
 ]
