@@ -16,7 +16,7 @@ MAX_SAMPLES_TO_PROCESS = 1_000_000
 
 DATASET_CONFIGS = [
     # C4データセットを使用 (英語)
-    {"name": "c4", "config": "en", "split": "train", "column": "text"},
+    {"name": "allenai/c4", "config": "en", "split": "train", "column": "text"},
 ]
 # --------------------------------------------------------------------------
 
