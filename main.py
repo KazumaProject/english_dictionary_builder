@@ -4,20 +4,23 @@ from collections import Counter
 import numpy as np
 from tqdm.auto import tqdm
 import spacy
+from itertools import islice
 
 # --------------------------------------------------------------------------
 # ★★★ 設定項目 ★★★
 N_GRAM_SIZE = 1
 SCORE_TYPE = 'cost'
+# 処理する最大サンプル数。GitHub Actionsの実行時間（最大6時間）に応じて調整してください。
+# 100万サンプルあたり、おおよそ1〜2時間かかる可能性があります。
+MAX_SAMPLES_TO_PROCESS = 1_000_000 
+
 DATASET_CONFIGS = [
-    # ユーザー指定の新しいbookcorpusデータセットを使用
-    {"name": "rojagtap/bookcorpus", "config": None, "split": "train", "column": "text"},
-    # {"name": "openwebtext", "config": None, "split": "train", "column": "text"},
-    # {"name": "wikitext", "config": "wikitext-103-v1", "split": "train", "column": "text"},
+    # C4データセットを使用 (英語)
+    {"name": "c4", "config": "en", "split": "train", "column": "text"},
 ]
 # --------------------------------------------------------------------------
 
-output_filename = f"{N_GRAM_SIZE}-grams_score_{SCORE_TYPE}_pos_combined.txt"
+output_filename = f"{N_GRAM_SIZE}-grams_score_{SCORE_TYPE}_pos_combined_c4_subset.txt"
 
 # (1) spaCyモデルの読み込み
 # 高速化のために不要なパイプライン（parser, ner）を無効化
@@ -32,32 +35,36 @@ word_details = {}
 # (3) ★★★ 複数のデータセットを順番に処理 ★★★
 for config in DATASET_CONFIGS:
     dataset_name = config["name"]
-    print(f"\nProcessing dataset: {dataset_name} (split: {config['split']})...")
+    print(f"\nProcessing dataset: {dataset_name} (config: {config['config']}, split: {config['split']})...")
+    print(f"Processing up to {MAX_SAMPLES_TO_PROCESS:,} samples.")
 
-    # configがNoneの場合は、引数から除外する
-    load_args = {
-        "path": dataset_name,
-        "split": config["split"],
-        "streaming": True,
-        "trust_remote_code": True
-    }
-    if config.get("config"):
-        load_args["name"] = config.get("config")
+    # ストリーミングモードでデータセットを読み込む
+    dataset = load_dataset(
+        path=dataset_name, 
+        name=config.get("config"), 
+        split=config["split"], 
+        streaming=True, 
+        trust_remote_code=True
+    )
 
-    # load_datasetの呼び出し方を修正
-    # 'path' と 'name' を明確に区別する
-    dataset = load_dataset(path=dataset_name, name=config.get("config"), split=config["split"], streaming=True, trust_remote_code=True)
-
+    # dataset.take() を使ってデータセットの先頭から指定した数だけ取り出す
+    subset_dataset = dataset.take(MAX_SAMPLES_TO_PROCESS)
 
     # nlp.pipeを使用してテキストを効率的に一括処理
     # documentsからテキストを抽出するジェネレータを作成
-    texts_generator = (item[config["column"]] for item in dataset)
+    texts_generator = (item[config["column"]] for item in subset_dataset)
     
     # バッチサイズを設定 (マシンのメモリに応じて調整)
     batch_size = 500
 
-    # nlp.pipeで処理。tqdmで進捗を表示
-    for doc in tqdm(nlp.pipe(texts_generator, batch_size=batch_size), desc=f"Processing {dataset_name}"):
+    # tqdmに合計値を設定して進捗バーを正確に表示
+    progress_bar = tqdm(
+        nlp.pipe(texts_generator, batch_size=batch_size), 
+        desc=f"Processing {dataset_name}",
+        total=MAX_SAMPLES_TO_PROCESS
+    )
+
+    for doc in progress_bar:
         words_to_count = []
         for token in doc:
             # is_alphaで英字のみを対象とし、stopワードを除外
