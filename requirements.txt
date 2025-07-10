@@ -5,3 +5,5 @@ nltk
 huggingface-hub
 pyarrow
 spacy
+apache-beam
+mwparserfromhell
