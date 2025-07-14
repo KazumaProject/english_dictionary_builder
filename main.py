@@ -1,5 +1,4 @@
-# main.py
-
+# (0) ライブラリのインポート
 from datasets import load_dataset
 from collections import Counter
 import numpy as np
@@ -8,7 +7,7 @@ import spacy
 
 # --------------------------------------------------------------------------
 # ★★★ 設定項目 ★★★
-N_GRAM_SIZE = 2
+N_GRAM_SIZE = 1
 SCORE_TYPE = 'cost'
 DATASET_CONFIGS = [
     # より小さい wikitext データセットでテスト
@@ -20,12 +19,14 @@ DATASET_CONFIGS = [
 output_filename = f"{N_GRAM_SIZE}-grams_score_{SCORE_TYPE}_pos_combined_with_ner.txt"
 
 # (1) spaCyモデルの読み込み
+# ★★★ 変更点: nerを有効化（リストから削除）★★★
+# 固有表現抽出(NER)を有効にし、より高精度に固有名詞を抽出
 print("Loading spaCy model...")
 nlp = spacy.load("en_core_web_sm", disable=["parser"])
 print("✅ spaCy model loaded.")
 
 # (2) カウンターとデータ保持用辞書を初期化
-ngram_counts = Counter()
+unigram_counts = Counter()
 word_details = {}
 
 # (3) ★★★ 複数のデータセットを順番に処理 ★★★
@@ -41,59 +42,63 @@ for config in DATASET_CONFIGS:
         trust_remote_code=True
     )
 
+    # nlp.pipeを使用してテキストを効率的に一括処理
+    # documentsからテキストを抽出するジェネレータを作成
     texts_generator = (item[config["column"]] for item in dataset)
+    
+    # バッチサイズを設定 (マシンのメモリに応じて調整)
     batch_size = 500
 
+    # nlp.pipeで処理。tqdmで進捗を表示
     for doc in tqdm(nlp.pipe(texts_generator, batch_size=batch_size), desc=f"Processing {dataset_name}"):
-        tokens = []
+        words_to_count = []
+        
+        # ★★★ 変更点: 固有表現(Entities)を先に処理 ★★★
         processed_entity_tokens = set()
-
-        # 固有表現(Entities)を先に処理
         for ent in doc.ents:
+            # GPE (地名), PERSON (人名), ORG (組織名) などの固有名詞を優先的に処理
             if ent.label_ in ['GPE', 'PERSON', 'ORG', 'PRODUCT', 'LOC', 'FAC', 'EVENT', 'WORK_OF_ART']:
-                root = ent.root
-                if root.is_alpha and not root.is_stop:
-                    lw = root.lower_
-                    tokens.append(lw)
-                    word_details[lw] = {'original': root.text, 'pos': ent.label_}
-                    processed_entity_tokens.add(root)
+                # 固有名詞が複数のトークンからなる場合、中心となるトークン(root)を代表として扱う
+                root_token = ent.root
+                if root_token.is_alpha and not root_token.is_stop:
+                    lower_word = root_token.lower_
+                    words_to_count.append(lower_word)
+                    
+                    # 固有表現ラベル(GPE, PERSON等)を品詞として保存
+                    word_details[lower_word] = {'original': root_token.text, 'pos': ent.label_}
+                    processed_entity_tokens.add(root_token)
 
-        # 通常のトークンを処理
+        # 次に、通常のトークンを処理
         for token in doc:
+            # 既に固有表現として処理されたトークンはスキップ
             if token in processed_entity_tokens:
                 continue
-            if token.is_alpha and not token.is_stop:
-                lw = token.lower_
-                tokens.append(lw)
-                if lw not in word_details:
-                    word_details[lw] = {'original': token.text, 'pos': token.pos_}
 
-        # n-gramをカウント
-        if N_GRAM_SIZE == 1:
-            ngram_counts.update(tokens)
-        else:
-            if len(tokens) >= N_GRAM_SIZE:
-                ngrams = [
-                    " ".join(tokens[i:i+N_GRAM_SIZE])
-                    for i in range(len(tokens) - N_GRAM_SIZE + 1)
-                ]
-                ngram_counts.update(ngrams)
-                for gram in ngrams:
-                    if gram not in word_details:
-                        word_details[gram] = {'original': gram, 'pos': 'NGRAM'}
+            if token.is_alpha and not token.is_stop:
+                lower_word = token.lower_
+                words_to_count.append(lower_word)
+
+                # まだ詳細が記録されていない単語のみ記録する
+                # (固有表現が優先されるため、通常のPROPNで上書きされるのを防ぐ)
+                if lower_word not in word_details:
+                    word_details[lower_word] = {'original': token.text, 'pos': token.pos_}
+        
+        unigram_counts.update(words_to_count)
 
 print("\n✅ All datasets processed. Frequency counting complete.")
+
 
 # (4) スコアを計算 (浮動小数点)
 print(f"Calculating floating point '{SCORE_TYPE}' scores...")
 float_scores_data = []
-total_ngrams = sum(ngram_counts.values())
-for gram, cnt in tqdm(ngram_counts.items(), desc="Calculating costs"):
-    if cnt > 0 and gram in word_details:
-        cost_score = -np.log(cnt / total_ngrams)
-        details = word_details[gram]
+
+total_unigrams = sum(unigram_counts.values())
+for lower_word, count in tqdm(unigram_counts.items(), desc="Calculating costs"):
+    if count > 0 and lower_word in word_details:
+        cost_score = -np.log(count / total_unigrams)
+        details = word_details[lower_word]
         float_scores_data.append({
-            "lower": gram,
+            "lower": lower_word,
             "original": details['original'],
             "pos": details['pos'],
             "score": cost_score
@@ -104,7 +109,8 @@ print("Normalizing scores to short integer range (0-65535)...")
 if float_scores_data:
     scores = [item['score'] for item in float_scores_data]
     min_score, max_score = min(scores), max(scores)
-    score_range = max_score - min_score or 1
+    score_range = max_score - min_score
+    if score_range == 0: score_range = 1
 
     final_data = []
     for item in float_scores_data:
@@ -113,7 +119,7 @@ if float_scores_data:
         final_data.append(item)
 else:
     final_data = []
-
+    
 # (6) 最終スコアが低い順にソート
 final_data.sort(key=lambda x: x['scaled_score'])
 
