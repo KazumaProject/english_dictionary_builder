@@ -1,4 +1,3 @@
-# (0) ライブラリのインポート
 from datasets import load_dataset
 from collections import Counter
 import numpy as np
@@ -42,56 +41,42 @@ for config in DATASET_CONFIGS:
     )
 
     # nlp.pipeを使用してテキストを効率的に一括処理
-    # documentsからテキストを抽出するジェネレータを作成
     texts_generator = (item[config["column"]] for item in dataset)
-    
-    # バッチサイズを設定 (マシンのメモリに応じて調整)
     batch_size = 500
 
-    # nlp.pipeで処理。tqdmで進捗を表示
     for doc in tqdm(nlp.pipe(texts_generator, batch_size=batch_size), desc=f"Processing {dataset_name}"):
         words_to_count = []
-        
-        # ★★★ 変更点: 固有表現(Entities)を先に処理 ★★★
         processed_entity_tokens = set()
+
+        # 固有表現(Entities)を先に処理
         for ent in doc.ents:
-            # GPE (地名), PERSON (人名), ORG (組織名) などの固有名詞を優先的に処理
             if ent.label_ in ['GPE', 'PERSON', 'ORG', 'PRODUCT', 'LOC', 'FAC', 'EVENT', 'WORK_OF_ART']:
-                # 固有名詞が複数のトークンからなる場合、中心となるトークン(root)を代表として扱う
                 root_token = ent.root
                 if root_token.is_alpha and not root_token.is_stop:
-                    lower_word = root_token.lower_
-                    words_to_count.append(lower_word)
-                    
-                    # 固有表現ラベル(GPE, PERSON等)を品詞として保存
-                    word_details[lower_word] = {'original': root_token.text, 'pos': ent.label_}
+                    lw = root_token.lower_
+                    words_to_count.append(lw)
+                    word_details[lw] = {'original': root_token.text, 'pos': ent.label_}
                     processed_entity_tokens.add(root_token)
 
-        # 次に、通常のトークンを処理
+        # 通常のトークン処理
         for token in doc:
-            # 既に固有表現として処理されたトークンはスキップ
             if token in processed_entity_tokens:
                 continue
-
             if token.is_alpha and not token.is_stop:
-                lower_word = token.lower_
-                words_to_count.append(lower_word)
+                lw = token.lower_
+                words_to_count.append(lw)
+                if lw not in word_details:
+                    word_details[lw] = {'original': token.text, 'pos': token.pos_}
 
-                # まだ詳細が記録されていない単語のみ記録する
-                # (固有表現が優先されるため、通常のPROPNで上書きされるのを防ぐ)
-                if lower_word not in word_details:
-                    word_details[lower_word] = {'original': token.text, 'pos': token.pos_}
-        
         unigram_counts.update(words_to_count)
 
 print("\n✅ All datasets processed. Frequency counting complete.")
 
-
 # (4) スコアを計算 (浮動小数点)
 print(f"Calculating floating point '{SCORE_TYPE}' scores...")
 float_scores_data = []
-
 total_unigrams = sum(unigram_counts.values())
+
 for lower_word, count in tqdm(unigram_counts.items(), desc="Calculating costs"):
     if count > 0 and lower_word in word_details:
         cost_score = -np.log(count / total_unigrams)
@@ -103,22 +88,22 @@ for lower_word, count in tqdm(unigram_counts.items(), desc="Calculating costs"):
             "score": cost_score
         })
 
-# (5) スコアを0-65535の範囲に正規化
-print("Normalizing scores to short integer range (0-65535)...")
+# (5) スコアを0-32767の範囲に正規化（Signed Short 用）
+print("Normalizing scores to signed short integer range (0-32767)...")
 if float_scores_data:
     scores = [item['score'] for item in float_scores_data]
     min_score, max_score = min(scores), max(scores)
-    score_range = max_score - min_score
-    if score_range == 0: score_range = 1
+    score_range = max_score - min_score or 1
 
+    max_short = np.iinfo(np.int16).max  # 32767
     final_data = []
     for item in float_scores_data:
-        scaled_score = int(((item['score'] - min_score) / score_range) * 65535)
-        item['scaled_score'] = scaled_score
+        scaled = int(((item['score'] - min_score) / score_range) * max_short)
+        item['scaled_score'] = scaled
         final_data.append(item)
 else:
     final_data = []
-    
+
 # (6) 最終スコアが低い順にソート
 final_data.sort(key=lambda x: x['scaled_score'])
 
