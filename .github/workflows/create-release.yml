@@ -31,7 +31,7 @@ jobs:
 
       - name: Archive production artifacts
         run: |
-          ARTIFACT_FILE="1-grams_score_cost_pos_combined.txt"
+          ARTIFACT_FILE="1-grams_score_cost_pos_combined_with_ner.txt"
           zip "${ARTIFACT_FILE%.txt}.zip" "$ARTIFACT_FILE"
 
       - name: Create Release and Upload Asset
