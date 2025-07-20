@@ -15,9 +15,9 @@ DATASET_CONFIGS = [
 # --------------------------------------------------------------------------
 
 output_filename = f"{N_GRAM_SIZE}-grams_score_{SCORE_TYPE}_pos_combined_with_ner.txt"
-unk_filename = "unk.txt"
 
 # (1) spaCyモデルの読み込み
+# ★★★ 変更点: nerを有効化（リストから削除）★★★
 # 固有表現抽出(NER)を有効にし、より高精度に固有名詞を抽出
 print("Loading spaCy model...")
 nlp = spacy.load("en_core_web_sm", disable=["parser"])
@@ -27,7 +27,7 @@ print("✅ spaCy model loaded.")
 unigram_counts = Counter()
 word_details = {}
 
-# (3) 複数のデータセットを順番に処理
+# (3) ★★★ 複数のデータセットを順番に処理 ★★★
 for config in DATASET_CONFIGS:
     dataset_name = config["name"]
     print(f"\nProcessing dataset: {dataset_name} (split: {config['split']})...")
@@ -107,21 +107,11 @@ else:
 # (6) 最終スコアが低い順にソート
 final_data.sort(key=lambda x: x['scaled_score'])
 
-# (7) ★★★ 変更点: 結果を通常ファイルとunk.txtに振り分けて保存 ★★★
-print(f"Saving results to '{output_filename}' and '{unk_filename}'...")
-with open(output_filename, "w", encoding="utf-8") as f_main, \
-     open(unk_filename, "w", encoding="utf-8") as f_unk:
-    
-    # メインのファイルにヘッダーを書き込む
-    f_main.write("input_word\toutput_word\tpos_tag\tscore\n")
-    
+# (7) 結果をファイルに保存
+print(f"Saving results to '{output_filename}'...")
+with open(output_filename, "w", encoding="utf-8") as f:
+    f.write("input_word\toutput_word\tpos_tag\tscore\n")
     for item in final_data:
-        # lowerとoriginalが両方'unk'の場合、unk.txtに書き出す
-        if item.get('lower') == 'unk' and item.get('original') == 'unk':
-            # unk.txtには単語のみを1行ずつ書き込む
-            f_unk.write(f"{item['lower']}\n")
-        else:
-            # それ以外の単語はメインのファイルに書き込む
-            f_main.write(f"{item['lower']}\t{item['original']}\t{item['pos']}\t{item['scaled_score']}\n")
+        f.write(f"{item['lower']}\t{item['original']}\t{item['pos']}\t{item['scaled_score']}\n")
 
-print(f"✅ Done! Saved combined scores to '{output_filename}' and unk words to '{unk_filename}'")
+print(f"✅ Done! Saved combined scores with POS/NER tags to '{output_filename}'")
