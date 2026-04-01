@@ -85,33 +85,24 @@ for lower_word, count in tqdm(unigram_counts.items(), desc="Calculating costs"):
             "lower": lower_word,
             "original": details['original'],
             "pos": details['pos'],
-            "score": cost_score
+            "score": cost_score,
+            "count": count,
+            "total_count": total_unigrams
         })
 
-# (5) スコアを0-32767の範囲に正規化（Signed Short 用）
-print("Normalizing scores to signed short integer range (0-32767)...")
-if float_scores_data:
-    scores = [item['score'] for item in float_scores_data]
-    min_score, max_score = min(scores), max(scores)
-    score_range = max_score - min_score or 1
-
-    max_short = np.iinfo(np.int16).max  # 32767
-    final_data = []
-    for item in float_scores_data:
-        scaled = int(((item['score'] - min_score) / score_range) * max_short)
-        item['scaled_score'] = scaled
-        final_data.append(item)
-else:
-    final_data = []
+# (5) 生のコストをそのまま使用
+final_data = float_scores_data
 
 # (6) 最終スコアが低い順にソート
-final_data.sort(key=lambda x: x['scaled_score'])
+final_data.sort(key=lambda x: x['score'])
 
 # (7) 結果をファイルに保存
 print(f"Saving results to '{output_filename}'...")
 with open(output_filename, "w", encoding="utf-8") as f:
-    f.write("input_word\toutput_word\tpos_tag\tscore\n")
+    f.write("input_word\toutput_word\tpos_tag\tscore\tcount\ttotal_count\n")
     for item in final_data:
-        f.write(f"{item['lower']}\t{item['original']}\t{item['pos']}\t{item['scaled_score']}\n")
+        f.write(
+            f"{item['lower']}\t{item['original']}\t{item['pos']}\t{item['score']}\t{item['count']}\t{item['total_count']}\n"
+        )
 
 print(f"✅ Done! Saved combined scores with POS/NER tags to '{output_filename}'")
