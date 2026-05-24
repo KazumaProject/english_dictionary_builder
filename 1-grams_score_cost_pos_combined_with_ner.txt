@@ -150,85 +150,282 @@ without	without	ADP	1200
 above	above	ADP	1300
 below	below	ADP	1300
 whom	whom	PRON	1400
+account	account	NOUN	1500
 android	Android	PROPN	1500
+app	app	NOUN	1500
 chatgpt	ChatGPT	PROPN	1500
+copy	copy	VERB	1500
+email	email	NOUN	1500
 github	GitHub	PROPN	1500
+goes	goes	VERB	1500
 google	Google	PROPN	1500
+ime	IME	NOUN	1500
+input	input	NOUN	1500
 ios	iOS	PROPN	1500
 iphone	iPhone	PROPN	1500
+keyboard	keyboard	NOUN	1500
+login	login	NOUN	1500
+made	made	VERB	1500
+makes	makes	VERB	1500
+message	message	NOUN	1500
 openai	OpenAI	PROPN	1500
+password	password	NOUN	1500
+paste	paste	VERB	1500
+phone	phone	NOUN	1500
+save	save	VERB	1500
+screen	screen	NOUN	1500
+search	search	VERB	1500
+settings	settings	NOUN	1500
+share	share	VERB	1500
+update	update	VERB	1500
+went	went	VERB	1500
+api	API	NOUN	1600
 autocad	AutoCAD	PROPN	1600
+browser	browser	NOUN	1600
+delete	delete	VERB	1600
+device	device	NOUN	1600
+download	download	VERB	1600
+edit	edit	VERB	1600
+emoji	emoji	NOUN	1600
+file	file	NOUN	1600
+inputmethod	inputmethod	NOUN	1600
+java	Java	PROPN	1600
 javascript	JavaScript	PROPN	1600
+json	JSON	NOUN	1600
+key	key	NOUN	1600
 kotlin	Kotlin	PROPN	1600
 nextjs	Next.js	PROPN	1600
-password	password	NOUN	1600
+profile	profile	NOUN	1600
 python	Python	PROPN	1600
 react	React	PROPN	1600
 supabase	Supabase	PROPN	1600
+swipe	swipe	VERB	1600
+takes	takes	VERB	1600
+tap	tap	VERB	1600
+took	took	VERB	1600
+touch	touch	VERB	1600
 typescript	TypeScript	PROPN	1600
-account	account	NOUN	1700
-app	app	NOUN	1700
+typing	typing	NOUN	1600
+upload	upload	VERB	1600
+username	username	NOUN	1600
+website	website	NOUN	1600
 apps	apps	NOUN	1700
-browser	browser	NOUN	1700
+battery	battery	NOUN	1700
+branch	branch	NOUN	1700
+camera	camera	NOUN	1700
+candidate	candidate	NOUN	1700
+client	client	NOUN	1700
+clipboard	clipboard	NOUN	1700
+commit	commit	NOUN	1700
+compose	Compose	PROPN	1700
 data	data	NOUN	1700
-email	email	NOUN	1700
-file	file	NOUN	1700
+database	database	NOUN	1700
+dictionary	dictionary	NOUN	1700
+folder	folder	NOUN	1700
+git	Git	NOUN	1700
+install	install	VERB	1700
 internet	internet	NOUN	1700
-login	login	NOUN	1700
-message	message	NOUN	1700
-settings	settings	NOUN	1700
-username	username	NOUN	1700
-website	website	NOUN	1700
+issue	issue	NOUN	1700
+keys	keys	NOUN	1700
+layout	layout	NOUN	1700
+link	link	NOUN	1700
+menu	menu	NOUN	1700
+merge	merge	VERB	1700
+notification	notification	NOUN	1700
+pixel	Pixel	PROPN	1700
+prediction	prediction	NOUN	1700
+pull	pull	VERB	1700
+ran	ran	VERB	1700
+release	release	NOUN	1700
+request	request	NOUN	1700
+runs	runs	VERB	1700
+server	server	NOUN	1700
+shortcut	shortcut	NOUN	1700
+signin	signin	NOUN	1700
+signup	signup	NOUN	1700
+smartphone	smartphone	NOUN	1700
+storage	storage	NOUN	1700
+suggestion	suggestion	NOUN	1700
+tablet	tablet	NOUN	1700
+workflow	workflow	NOUN	1700
+writes	writes	VERB	1700
+wrote	wrote	VERB	1700
+xml	XML	NOUN	1700
+yaml	YAML	NOUN	1700
 i	i	X	1714
+actions	Actions	PROPN	1800
+artifact	artifact	NOUN	1800
+autocorrect	autocorrect	NOUN	1800
+backspace	backspace	NOUN	1800
+backup	backup	NOUN	1800
+bluetooth	Bluetooth	PROPN	1800
 center	center	NOUN	1800
 centre	centre	NOUN	1800
-client	client	NOUN	1800
 code	code	NOUN	1800
 color	color	NOUN	1800
 colour	colour	NOUN	1800
-download	download	VERB	1800
+conversion	conversion	NOUN	1800
+enter	enter	VERB	1800
 favorite	favorite	ADJ	1800
 favourite	favourite	ADJ	1800
-folder	folder	NOUN	1800
+gesture	gesture	NOUN	1800
+gradle	Gradle	PROPN	1800
+hiragana	hiragana	NOUN	1800
 image	image	NOUN	1800
-link	link	NOUN	1800
+kana	kana	NOUN	1800
+kanji	kanji	NOUN	1800
+katakana	katakana	NOUN	1800
+logout	logout	NOUN	1800
+microphone	microphone	NOUN	1800
+permission	permission	NOUN	1800
 photo	photo	NOUN	1800
-profile	profile	NOUN	1800
-server	server	NOUN	1800
-upload	upload	VERB	1800
+pipeline	pipeline	NOUN	1800
+qwerty	QWERTY	NOUN	1800
+repository	repository	NOUN	1800
+romaji	romaji	NOUN	1800
+space	space	NOUN	1800
+sync	sync	VERB	1800
+tab	tab	NOUN	1800
 video	video	NOUN	1800
+wifi	Wi-Fi	NOUN	1800
+window	window	NOUN	1800
 behavior	behavior	NOUN	1900
 behaviour	behaviour	NOUN	1900
+brightness	brightness	NOUN	1900
 canceled	canceled	VERB	1900
 cancelled	cancelled	VERB	1900
+cellular	cellular	ADJ	1900
 check	check	NOUN	1900
 cheque	cheque	NOUN	1900
+composing	composing	VERB	1900
+copied	copied	VERB	1900
+copies	copies	VERB	1900
 defence	defence	NOUN	1900
 defense	defense	NOUN	1900
+flick	flick	NOUN	1900
 gray	gray	ADJ	1900
 grey	grey	ADJ	1900
 honor	honor	NOUN	1900
 honour	honour	NOUN	1900
 labor	labor	NOUN	1900
 labour	labour	NOUN	1900
+launcher	launcher	NOUN	1900
 licence	licence	NOUN	1900
 license	license	NOUN	1900
-logout	logout	NOUN	1900
 meter	meter	NOUN	1900
 metre	metre	NOUN	1900
 neighbor	neighbor	NOUN	1900
 neighbour	neighbour	NOUN	1900
-notification	notification	NOUN	1900
 organise	organise	VERB	1900
 organize	organize	VERB	1900
 realise	realise	VERB	1900
 realize	realize	VERB	1900
+restore	restore	VERB	1900
+tapped	tapped	VERB	1900
+taps	taps	VERB	1900
 theater	theater	NOUN	1900
 theatre	theatre	NOUN	1900
 traveling	traveling	VERB	1900
 travelling	travelling	VERB	1900
+uninstall	uninstall	VERB	1900
+widget	widget	NOUN	1900
+accounts	accounts	NOUN	1950
+closes	closes	VERB	1950
+downloads	downloads	VERB	1950
+emojis	emojis	NOUN	1950
+messages	messages	NOUN	1950
+opens	opens	VERB	1950
+pastes	pastes	VERB	1950
+saves	saves	VERB	1950
+screens	screens	NOUN	1950
+shares	shares	VERB	1950
+updates	updates	VERB	1950
+uploads	uploads	VERB	1950
+uses	uses	VERB	1950
+preedit	preedit	NOUN	2000
+rotation	rotation	NOUN	2000
+vibration	vibration	NOUN	2000
+browsers	browsers	NOUN	2050
+candidates	candidates	NOUN	2050
+closed	closed	VERB	2050
+closing	closing	VERB	2050
+composes	composes	VERB	2050
+copying	copying	VERB	2050
+databases	databases	NOUN	2050
+deletes	deletes	VERB	2050
+downloaded	downloaded	VERB	2050
+downloading	downloading	VERB	2050
+edits	edits	VERB	2050
+installs	installs	VERB	2050
+issues	issues	NOUN	2050
+merges	merges	VERB	2050
+opened	opened	VERB	2050
+opening	opening	VERB	2050
+pasted	pasted	VERB	2050
+pasting	pasting	VERB	2050
+plays	plays	VERB	2050
+releases	releases	VERB	2050
+requests	requests	VERB	2050
+saved	saved	VERB	2050
+saving	saving	VERB	2050
+searched	searched	VERB	2050
+searching	searching	VERB	2050
+shared	shared	VERB	2050
+sharing	sharing	VERB	2050
+suggestions	suggestions	NOUN	2050
+swipes	swipes	VERB	2050
+types	types	VERB	2050
+updated	updated	VERB	2050
+updating	updating	VERB	2050
+uploaded	uploaded	VERB	2050
+uploading	uploading	VERB	2050
+used	used	VERB	2050
+using	using	VERB	2050
+workflows	workflows	NOUN	2050
+works	works	VERB	2050
+branches	branches	NOUN	2100
+commits	commits	VERB	2100
+committed	committed	VERB	2100
+committing	committing	VERB	2100
+composed	composed	VERB	2150
+converts	converts	VERB	2150
+deleted	deleted	VERB	2150
+deleting	deleting	VERB	2150
+edited	edited	VERB	2150
+editing	editing	VERB	2150
+installed	installed	VERB	2150
+installing	installing	VERB	2150
+merged	merged	VERB	2150
+merging	merging	VERB	2150
+played	played	VERB	2150
+playing	playing	VERB	2150
+released	released	VERB	2150
+releasing	releasing	VERB	2150
+requested	requested	VERB	2150
+requesting	requesting	VERB	2150
+swiped	swiped	VERB	2150
+swiping	swiping	VERB	2150
+typed	typed	VERB	2150
+worked	worked	VERB	2150
+working	working	VERB	2150
+faster	faster	ADJ	2200
+larger	larger	ADJ	2200
+quicker	quicker	ADJ	2200
+simpler	simpler	ADJ	2200
+smaller	smaller	ADJ	2200
+commited	commited	VERB	2250
+commiting	commiting	VERB	2250
+converted	converted	VERB	2250
+converting	converting	VERB	2250
+fastest	fastest	ADJ	2250
+largest	largest	ADJ	2250
+quickest	quickest	ADJ	2250
+simplest	simplest	ADJ	2250
+smallest	smallest	ADJ	2250
+slower	slower	ADJ	2300
 all	all	X	2349
 so	so	X	2349
+slowest	slowest	ADJ	2350
 one	one	X	2405
 like	like	X	2472
 up	up	X	2494
@@ -268,7 +465,6 @@ day	day	X	2985
 too	too	X	2985
 going	going	X	2996
 off	off	X	3007
-made	made	X	3019
 take	take	X	3019
 got	got	X	3030
 many	many	X	3030
@@ -288,7 +484,6 @@ look	look	X	3141
 something	something	X	3141
 use	use	X	3141
 same	same	X	3153
-used	used	X	3153
 both	both	X	3164
 every	every	X	3164
 come	come	X	3175
@@ -404,14 +599,12 @@ head	head	X	3476
 men	men	X	3476
 national	national	X	3476
 small	small	X	3476
-took	took	X	3476
 white	white	X	3476
 came	came	X	3488
 far	far	X	3488
 job	job	X	3488
 side	side	X	3488
 try	try	X	3488
-went	went	X	3488
 actually	actually	X	3499
 american	american	X	3499
 later	later	X	3499
@@ -432,12 +625,10 @@ everyone	everyone	X	3521
 general	general	X	3521
 trying	trying	X	3521
 united	united	X	3521
-using	using	X	3521
 area	area	X	3532
 black	black	X	3532
 following	following	X	3532
 law	law	X	3532
-makes	makes	X	3532
 together	together	X	3532
 war	war	X	3532
 whole	whole	X	3532
@@ -449,7 +640,6 @@ maybe	maybe	X	3544
 per	per	X	3544
 president	president	X	3544
 story	story	X	3544
-working	working	X	3544
 course	course	X	3555
 games	games	X	3555
 health	health	X	3555
@@ -523,7 +713,6 @@ friend	friend	X	3633
 hit	hit	X	3633
 needs	needs	X	3633
 nice	nice	X	3633
-playing	playing	X	3633
 probably	probably	X	3633
 saying	saying	X	3633
 understand	understand	X	3633
@@ -596,7 +785,6 @@ fun	fun	X	3712
 living	living	X	3712
 major	major	X	3712
 media	media	X	3712
-phone	phone	X	3712
 players	players	X	3712
 art	art	X	3723
 behind	behind	X	3723
@@ -612,7 +800,6 @@ quite	quite	X	3723
 six	six	X	3723
 talking	talking	X	3723
 west	west	X	3723
-works	works	X	3723
 according	according	X	3734
 available	available	X	3734
 education	education	X	3734
@@ -675,8 +862,6 @@ fight	fight	X	3790
 fine	fine	X	3790
 force	force	X	3790
 hear	hear	X	3790
-issue	issue	X	3790
-played	played	X	3790
 points	points	X	3790
 price	price	X	3790
 re	re	X	3790
@@ -684,14 +869,12 @@ rest	rest	X	3790
 results	results	X	3790
 running	running	X	3790
 shows	shows	X	3790
-space	space	X	3790
 summer	summer	X	3790
 term	term	X	3790
 wife	wife	X	3790
 america	america	X	3801
 beautiful	beautiful	X	3801
 date	date	X	3801
-goes	goes	X	3801
 killed	killed	X	3801
 land	land	X	3801
 miss	miss	X	3801
@@ -723,7 +906,6 @@ military	military	X	3824
 perfect	perfect	X	3824
 personal	personal	X	3824
 security	security	X	3824
-share	share	X	3824
 st	st	X	3824
 tv	tv	X	3824
 won	won	X	3824
@@ -736,7 +918,6 @@ happen	happen	X	3835
 hold	hold	X	3835
 industry	industry	X	3835
 inside	inside	X	3835
-issues	issues	X	3835
 online	online	X	3835
 player	player	X	3835
 private	private	X	3835
@@ -760,7 +941,6 @@ needed	needed	X	3846
 present	present	X	3846
 result	result	X	3846
 sorry	sorry	X	3846
-takes	takes	X	3846
 training	training	X	3846
 wish	wish	X	3846
 answer	answer	X	3857
@@ -800,7 +980,6 @@ role	role	X	3869
 sent	sent	X	3869
 themselves	themselves	X	3869
 tried	tried	X	3869
-worked	worked	X	3869
 worth	worth	X	3869
 areas	areas	X	3880
 became	became	X	3880
@@ -829,7 +1008,6 @@ production	production	X	3891
 rate	rate	X	3891
 reading	reading	X	3891
 round	round	X	3891
-save	save	X	3891
 stand	stand	X	3891
 stuff	stuff	X	3891
 tax	tax	X	3891
@@ -860,7 +1038,6 @@ england	england	X	3914
 forward	forward	X	3914
 groups	groups	X	3914
 hey	hey	X	3914
-key	key	X	3914
 mom	mom	X	3914
 page	page	X	3914
 paid	paid	X	3914
@@ -924,7 +1101,6 @@ kill	kill	X	3947
 met	met	X	3947
 perhaps	perhaps	X	3947
 poor	poor	X	3947
-release	release	X	3947
 situation	situation	X	3947
 technology	technology	X	3947
 turned	turned	X	3947
@@ -1013,7 +1189,6 @@ missing	missing	X	3992
 offer	offer	X	3992
 pass	pass	X	3992
 professional	professional	X	3992
-released	released	X	3992
 risk	risk	X	3992
 schools	schools	X	3992
 sleep	sleep	X	3992
@@ -1041,7 +1216,6 @@ straight	straight	X	4004
 visit	visit	X	4004
 wall	wall	X	4004
 wanna	wanna	X	4004
-wrote	wrote	X	4004
 allowed	allowed	X	4015
 boys	boys	X	4015
 culture	culture	X	4015
@@ -1222,7 +1396,6 @@ heavy	heavy	X	4094
 includes	includes	X	4094
 knowledge	knowledge	X	4094
 particularly	particularly	X	4094
-search	search	X	4094
 subject	subject	X	4094
 train	train	X	4094
 wide	wide	X	4094
@@ -1275,7 +1448,6 @@ hurt	hurt	X	4116
 insurance	insurance	X	4116
 majority	majority	X	4116
 meant	meant	X	4116
-opening	opening	X	4116
 opinion	opinion	X	4116
 physical	physical	X	4116
 pro	pro	X	4116
@@ -1366,10 +1538,8 @@ speaking	speaking	X	4150
 supposed	supposed	X	4150
 sweet	sweet	X	4150
 thus	thus	X	4150
-touch	touch	X	4150
 yesterday	yesterday	X	4150
 caught	caught	X	4162
-closed	closed	X	4162
 congress	congress	X	4162
 damage	damage	X	4162
 directly	directly	X	4162
@@ -1387,7 +1557,6 @@ germany	germany	X	4162
 glad	glad	X	4162
 greater	greater	X	4162
 grow	grow	X	4162
-largest	largest	X	4162
 machine	machine	X	4162
 notice	notice	X	4162
 overall	overall	X	4162
@@ -1453,11 +1622,9 @@ showing	showing	X	4184
 sick	sick	X	4184
 teacher	teacher	X	4184
 theory	theory	X	4184
-uses	uses	X	4184
 william	william	X	4184
 agency	agency	X	4195
 avoid	avoid	X	4195
-camera	camera	X	4195
 catch	catch	X	4195
 cell	cell	X	4195
 coast	coast	X	4195
@@ -1477,7 +1644,6 @@ operations	operations	X	4196
 politics	politics	X	4196
 pop	pop	X	4196
 produced	produced	X	4196
-ran	ran	X	4196
 saturday	saturday	X	4196
 status	status	X	4196
 therefore	therefore	X	4196
@@ -1529,7 +1695,6 @@ learned	learned	X	4218
 losing	losing	X	4218
 mobile	mobile	X	4218
 northern	northern	X	4218
-opened	opened	X	4218
 placed	placed	X	4218
 powerful	powerful	X	4218
 prior	prior	X	4218
@@ -1540,7 +1705,6 @@ religious	religious	X	4218
 ride	ride	X	4218
 robert	robert	X	4218
 royal	royal	X	4218
-screen	screen	X	4218
 serve	serve	X	4218
 signed	signed	X	4218
 slow	slow	X	4218
@@ -1548,7 +1712,6 @@ species	species	X	4218
 speech	speech	X	4218
 traffic	traffic	X	4218
 tree	tree	X	4218
-types	types	X	4218
 vs	vs	X	4218
 wearing	wearing	X	4218
 wonderful	wonderful	X	4218
@@ -1570,9 +1733,7 @@ keeping	keeping	X	4229
 lie	lie	X	4229
 notes	notes	X	4229
 partner	partner	X	4229
-plays	plays	X	4229
 raised	raised	X	4229
-runs	runs	X	4229
 sad	sad	X	4229
 solution	solution	X	4229
 songs	songs	X	4229
@@ -1639,12 +1800,10 @@ generation	generation	X	4252
 hearing	hearing	X	4252
 hill	hill	X	4252
 jack	jack	X	4252
-larger	larger	X	4252
 louis	louis	X	4252
 metal	metal	X	4252
 mid	mid	X	4252
 paris	paris	X	4252
-pull	pull	X	4252
 push	push	X	4252
 returned	returned	X	4252
 rose	rose	X	4252
@@ -1664,7 +1823,6 @@ chris	chris	X	4263
 draw	draw	X	4263
 dude	dude	X	4263
 employees	employees	X	4263
-enter	enter	X	4263
 ex	ex	X	4263
 follows	follows	X	4263
 foundation	foundation	X	4263
@@ -1705,13 +1863,11 @@ prison	prison	X	4275
 provides	provides	X	4275
 remains	remains	X	4275
 senate	senate	X	4275
-smaller	smaller	X	4275
 somebody	somebody	X	4275
 stone	stone	X	4275
 strength	strength	X	4275
 users	users	X	4275
 wild	wild	X	4275
-window	window	X	4275
 winner	winner	X	4275
 arrived	arrived	X	4286
 bag	bag	X	4286
@@ -1783,7 +1939,6 @@ charles	charles	X	4309
 classes	classes	X	4309
 completed	completed	X	4309
 concept	concept	X	4309
-copy	copy	X	4309
 dear	dear	X	4309
 dogs	dogs	X	4309
 drugs	drugs	X	4309
@@ -1831,7 +1986,6 @@ managed	managed	X	4320
 map	map	X	4320
 net	net	X	4320
 owned	owned	X	4320
-request	request	X	4320
 stick	stick	X	4320
 turns	turns	X	4320
 vehicle	vehicle	X	4320
@@ -1911,7 +2065,6 @@ strategy	strategy	X	4343
 teachers	teachers	X	4343
 web	web	X	4343
 wine	wine	X	4343
-accounts	accounts	X	4354
 angeles	angeles	X	4354
 arm	arm	X	4354
 audience	audience	X	4354
@@ -2113,7 +2266,6 @@ supreme	supreme	X	4399
 survey	survey	X	4399
 tech	tech	X	4399
 trees	trees	X	4399
-update	update	X	4399
 user	user	X	4399
 writer	writer	X	4399
 yellow	yellow	X	4399
@@ -2144,7 +2296,6 @@ relationships	relationships	X	4411
 restaurant	restaurant	X	4411
 scotland	scotland	X	4411
 selected	selected	X	4411
-shared	shared	X	4411
 shopping	shopping	X	4411
 soft	soft	X	4411
 stuck	stuck	X	4411
@@ -2165,7 +2316,6 @@ artists	artists	X	4422
 boston	boston	X	4422
 ca	ca	X	4422
 confirmed	confirmed	X	4422
-device	device	X	4422
 drama	drama	X	4422
 entry	entry	X	4422
 era	era	X	4422
@@ -2192,7 +2342,6 @@ regarding	regarding	X	4422
 relations	relations	X	4422
 requires	requires	X	4422
 route	route	X	4422
-saved	saved	X	4422
 schedule	schedule	X	4422
 scientific	scientific	X	4422
 shoes	shoes	X	4422
@@ -2208,7 +2357,6 @@ ya	ya	X	4422
 abuse	abuse	X	4433
 angry	angry	X	4433
 businesses	businesses	X	4433
-candidate	candidate	X	4433
 comfortable	comfortable	X	4433
 concern	concern	X	4433
 developing	developing	X	4433
@@ -2245,7 +2393,6 @@ perform	perform	X	4434
 recorded	recorded	X	4434
 relatively	relatively	X	4434
 sector	sector	X	4434
-sharing	sharing	X	4434
 snow	snow	X	4434
 storm	storm	X	4434
 streets	streets	X	4434
@@ -2260,7 +2407,6 @@ apartment	apartment	X	4445
 asia	asia	X	4445
 chain	chain	X	4445
 chapter	chapter	X	4445
-committed	committed	X	4445
 confidence	confidence	X	4445
 cook	cook	X	4445
 cute	cute	X	4445
@@ -2309,7 +2455,6 @@ documents	documents	X	4456
 escape	escape	X	4456
 extended	extended	X	4456
 factors	factors	X	4456
-faster	faster	X	4456
 fault	fault	X	4456
 fill	fill	X	4456
 films	films	X	4456
@@ -2515,7 +2660,6 @@ row	row	X	4502
 salt	salt	X	4502
 scared	scared	X	4502
 scottish	scottish	X	4502
-shares	shares	X	4502
 statistics	statistics	X	4502
 switch	switch	X	4502
 territory	territory	X	4502
@@ -2570,7 +2714,6 @@ register	register	X	4513
 resolution	resolution	X	4513
 rural	rural	X	4513
 ryan	ryan	X	4513
-saving	saving	X	4513
 sees	sees	X	4513
 singing	singing	X	4513
 spain	spain	X	4513
@@ -2582,7 +2725,6 @@ wars	wars	X	4513
 wednesday	wednesday	X	4513
 admit	admit	X	4524
 attitude	attitude	X	4524
-branch	branch	X	4524
 brazil	brazil	X	4524
 conducted	conducted	X	4524
 decades	decades	X	4524
@@ -2656,7 +2798,6 @@ representative	representative	X	4536
 scheme	scheme	X	4536
 shift	shift	X	4536
 stood	stood	X	4536
-storage	storage	X	4536
 tank	tank	X	4536
 tend	tend	X	4536
 tight	tight	X	4536
@@ -2669,7 +2810,6 @@ anybody	anybody	X	4547
 assets	assets	X	4547
 basketball	basketball	X	4547
 button	button	X	4547
-candidates	candidates	X	4547
 combat	combat	X	4547
 constitution	constitution	X	4547
 consumer	consumer	X	4547
@@ -2776,7 +2916,6 @@ staying	staying	X	4559
 stronger	stronger	X	4559
 surely	surely	X	4559
 tip	tip	X	4559
-updated	updated	X	4559
 writers	writers	X	4559
 absolute	absolute	X	4570
 advertising	advertising	X	4570
@@ -2805,7 +2944,6 @@ incident	incident	X	4570
 irish	irish	X	4570
 linked	linked	X	4570
 manage	manage	X	4570
-messages	messages	X	4570
 michigan	michigan	X	4570
 multi	multi	X	4570
 nfl	nfl	X	4570
@@ -2881,7 +3019,6 @@ attached	attached	X	4593
 attacked	attacked	X	4593
 automatically	automatically	X	4593
 balls	balls	X	4593
-battery	battery	X	4593
 bills	bills	X	4593
 blind	blind	X	4593
 breath	breath	X	4593
@@ -3015,7 +3152,6 @@ mountains	mountains	X	4616
 neighborhood	neighborhood	X	4616
 operate	operate	X	4616
 outstanding	outstanding	X	4616
-permission	permission	X	4616
 porn	porn	X	4616
 racing	racing	X	4616
 recommended	recommended	X	4616
@@ -3213,7 +3349,6 @@ carefully	carefully	X	4661
 cats	cats	X	4661
 ceo	ceo	X	4661
 choices	choices	X	4661
-closing	closing	X	4661
 cloud	cloud	X	4661
 colorado	colorado	X	4661
 colors	colors	X	4661
@@ -3409,7 +3544,6 @@ commissioner	commissioner	X	4696
 commitment	commitment	X	4696
 confident	confident	X	4696
 containing	containing	X	4696
-copies	copies	X	4696
 crimes	crimes	X	4696
 custom	custom	X	4696
 denied	denied	X	4696
@@ -3431,7 +3565,6 @@ liverpool	liverpool	X	4696
 locked	locked	X	4696
 naked	naked	X	4696
 ny	ny	X	4696
-opens	opens	X	4696
 output	output	X	4696
 persons	persons	X	4696
 pitch	pitch	X	4696
@@ -3619,7 +3752,6 @@ hire	hire	X	4730
 hop	hop	X	4730
 hopes	hopes	X	4730
 insane	insane	X	4730
-installed	installed	X	4730
 israeli	israeli	X	4730
 landing	landing	X	4730
 layer	layer	X	4730
@@ -3686,7 +3818,6 @@ gary	gary	X	4742
 handling	handling	X	4742
 idiot	idiot	X	4742
 intense	intense	X	4742
-keys	keys	X	4742
 lawyers	lawyers	X	4742
 lifetime	lifetime	X	4742
 liquid	liquid	X	4742
@@ -3889,7 +4020,6 @@ roughly	roughly	X	4776
 salary	salary	X	4776
 scoring	scoring	X	4776
 script	script	X	4776
-searching	searching	X	4776
 sections	sections	X	4776
 strip	strip	X	4776
 surrounded	surrounded	X	4776
@@ -3899,7 +4029,6 @@ tube	tube	X	4776
 universities	universities	X	4776
 walter	walter	X	4776
 wisconsin	wisconsin	X	4776
-writes	writes	X	4776
 ambassador	ambassador	X	4788
 ann	ann	X	4788
 awarded	awarded	X	4788
@@ -3930,7 +4059,6 @@ holes	holes	X	4788
 impression	impression	X	4788
 inches	inches	X	4788
 indicate	indicate	X	4788
-input	input	X	4788
 johnny	johnny	X	4788
 josh	josh	X	4788
 knock	knock	X	4788
@@ -4042,7 +4170,6 @@ boots	boots	X	4811
 brave	brave	X	4811
 claiming	claiming	X	4811
 column	column	X	4811
-commit	commit	X	4811
 compensation	compensation	X	4811
 composition	composition	X	4811
 computers	computers	X	4811
@@ -4088,7 +4215,6 @@ prominent	prominent	X	4811
 proven	proven	X	4811
 radical	radical	X	4811
 remembered	remembered	X	4811
-requested	requested	X	4811
 residential	residential	X	4811
 reward	reward	X	4811
 rings	rings	X	4811
@@ -4160,7 +4286,6 @@ punch	punch	X	4822
 purple	purple	X	4822
 railroad	railroad	X	4822
 registration	registration	X	4822
-releases	releases	X	4822
 rick	rick	X	4822
 romance	romance	X	4822
 submitted	submitted	X	4822
@@ -4195,7 +4320,6 @@ checks	checks	X	4834
 chip	chip	X	4834
 concerning	concerning	X	4834
 dare	dare	X	4834
-database	database	X	4834
 define	define	X	4834
 discrimination	discrimination	X	4834
 disorder	disorder	X	4834
@@ -4204,7 +4328,6 @@ districts	districts	X	4834
 documentary	documentary	X	4834
 domain	domain	X	4834
 dynamic	dynamic	X	4834
-edited	edited	X	4834
 engagement	engagement	X	4834
 explore	explore	X	4834
 favour	favour	X	4834
@@ -4252,7 +4375,6 @@ toilet	toilet	X	4834
 treaty	treaty	X	4834
 triple	triple	X	4834
 unlikely	unlikely	X	4834
-updates	updates	X	4834
 vietnam	vietnam	X	4834
 viewed	viewed	X	4834
 affair	affair	X	4845
@@ -4268,7 +4390,6 @@ craft	craft	X	4845
 darkness	darkness	X	4845
 deeper	deeper	X	4845
 devil	devil	X	4845
-edit	edit	X	4845
 enable	enable	X	4845
 equity	equity	X	4845
 estimates	estimates	X	4845
@@ -4454,7 +4575,6 @@ publicly	publicly	X	4868
 pump	pump	X	4868
 repeated	repeated	X	4868
 replied	replied	X	4868
-requests	requests	X	4868
 revenge	revenge	X	4868
 satisfied	satisfied	X	4868
 seeds	seeds	X	4868
@@ -4467,7 +4587,6 @@ stocks	stocks	X	4868
 stranger	stranger	X	4868
 submit	submit	X	4868
 surprising	surprising	X	4868
-tap	tap	X	4868
 thompson	thompson	X	4868
 threats	threats	X	4868
 tourism	tourism	X	4868
@@ -4483,7 +4602,6 @@ chaos	chaos	X	4880
 churches	churches	X	4880
 cleveland	cleveland	X	4880
 cm	cm	X	4880
-composed	composed	X	4880
 concentration	concentration	X	4880
 copper	copper	X	4880
 corp	corp	X	4880
@@ -4493,7 +4611,6 @@ credits	credits	X	4880
 dawn	dawn	X	4880
 dispute	dispute	X	4880
 earnings	earnings	X	4880
-editing	editing	X	4880
 executed	executed	X	4880
 firing	firing	X	4880
 fits	fits	X	4880
@@ -4579,7 +4696,6 @@ intervention	intervention	X	4891
 jerry	jerry	X	4891
 lover	lover	X	4891
 mainstream	mainstream	X	4891
-menu	menu	X	4891
 missouri	missouri	X	4891
 mounted	mounted	X	4891
 mutual	mutual	X	4891
@@ -4709,7 +4825,6 @@ burns	burns	X	4914
 carl	carl	X	4914
 celebrated	celebrated	X	4914
 consistently	consistently	X	4914
-conversion	conversion	X	4914
 copyright	copyright	X	4914
 counties	counties	X	4914
 democrat	democrat	X	4914
@@ -4722,7 +4837,6 @@ emails	emails	X	4914
 er	er	X	4914
 exclusively	exclusively	X	4914
 export	export	X	4914
-fastest	fastest	X	4914
 formerly	formerly	X	4914
 functional	functional	X	4914
 gather	gather	X	4914
@@ -4764,7 +4878,6 @@ speakers	speakers	X	4914
 springs	springs	X	4914
 spy	spy	X	4915
 steven	steven	X	4915
-suggestions	suggestions	X	4915
 supplied	supplied	X	4915
 susan	susan	X	4915
 suspension	suspension	X	4915
@@ -4862,7 +4975,6 @@ stealing	stealing	X	4926
 strict	strict	X	4926
 subsequently	subsequently	X	4926
 substance	substance	X	4926
-suggestion	suggestion	X	4926
 switzerland	switzerland	X	4926
 syndrome	syndrome	X	4926
 tasks	tasks	X	4926
@@ -4895,7 +5007,6 @@ competing	competing	X	4937
 completion	completion	X	4937
 cruise	cruise	X	4937
 custody	custody	X	4937
-delete	delete	X	4937
 demonstrated	demonstrated	X	4937
 departure	departure	X	4937
 developers	developers	X	4937
@@ -4965,11 +5076,9 @@ abilities	abilities	X	4949
 advocate	advocate	X	4949
 aims	aims	X	4949
 arc	arc	X	4949
-backup	backup	X	4949
 beaten	beaten	X	4949
 bitter	bitter	X	4949
 blown	blown	X	4949
-branches	branches	X	4949
 campaigns	campaigns	X	4949
 chips	chips	X	4949
 cia	cia	X	4949
@@ -4978,7 +5087,6 @@ clinic	clinic	X	4949
 closest	closest	X	4949
 collections	collections	X	4949
 continuous	continuous	X	4949
-converted	converted	X	4949
 correctly	correctly	X	4949
 creator	creator	X	4949
 creatures	creatures	X	4949
@@ -5274,7 +5382,6 @@ consecutive	consecutive	X	4984
 contents	contents	X	4984
 costume	costume	X	4984
 craig	craig	X	4984
-deleted	deleted	X	4984
 devoted	devoted	X	4984
 didnt	didnt	X	4984
 displayed	displayed	X	4984
@@ -5310,7 +5417,6 @@ proceed	proceed	X	4984
 proceedings	proceedings	X	4984
 pupils	pupils	X	4984
 reserved	reserved	X	4984
-restore	restore	X	4984
 rifle	rifle	X	4984
 rival	rival	X	4984
 rs	rs	X	4984
@@ -5645,7 +5751,6 @@ immune	immune	X	5030
 inflation	inflation	X	5030
 ingredients	ingredients	X	5030
 inspection	inspection	X	5030
-install	install	X	5030
 instruction	instruction	X	5030
 intensity	intensity	X	5030
 inventory	inventory	X	5030
@@ -5678,7 +5783,6 @@ pig	pig	X	5031
 pile	pile	X	5031
 plug	plug	X	5031
 provision	provision	X	5031
-releasing	releasing	X	5031
 requiring	requiring	X	5031
 revised	revised	X	5031
 rod	rod	X	5031
@@ -5928,7 +6032,6 @@ hurting	hurting	X	5065
 hybrid	hybrid	X	5065
 intentions	intentions	X	5065
 investing	investing	X	5065
-keyboard	keyboard	X	5065
 lasting	lasting	X	5065
 locally	locally	X	5065
 loses	loses	X	5065
@@ -6207,7 +6310,6 @@ kg	kg	X	5100
 labels	labels	X	5100
 lacking	lacking	X	5100
 laughs	laughs	X	5100
-layout	layout	X	5100
 lined	lined	X	5100
 lodge	lodge	X	5100
 lords	lords	X	5100
@@ -6238,7 +6340,6 @@ raped	raped	X	5100
 realised	realised	X	5100
 rebel	rebel	X	5100
 repairs	repairs	X	5100
-rotation	rotation	X	5100
 separately	separately	X	5100
 shaking	shaking	X	5100
 shaw	shaw	X	5100
@@ -6355,7 +6456,6 @@ reign	reign	X	5112
 responding	responding	X	5112
 retained	retained	X	5112
 rises	rises	X	5112
-saves	saves	X	5112
 scan	scan	X	5112
 scare	scare	X	5112
 sectors	sectors	X	5112
@@ -6463,7 +6563,6 @@ rope	rope	X	5124
 shadows	shadows	X	5124
 shout	shout	X	5124
 sierra	sierra	X	5124
-smartphone	smartphone	X	5124
 specified	specified	X	5124
 spectacular	spectacular	X	5124
 stan	stan	X	5124
@@ -6575,7 +6674,6 @@ subway	subway	X	5135
 supportive	supportive	X	5135
 surgical	surgical	X	5135
 symbols	symbols	X	5135
-tablet	tablet	X	5135
 tent	tent	X	5135
 thesis	thesis	X	5135
 tide	tide	X	5135
@@ -6660,7 +6758,6 @@ opposing	opposing	X	5147
 origins	origins	X	5147
 orlando	orlando	X	5147
 physicians	physicians	X	5147
-pipeline	pipeline	X	5147
 placement	placement	X	5147
 planted	planted	X	5147
 pricing	pricing	X	5147
@@ -6768,7 +6865,6 @@ reasonably	reasonably	X	5159
 reject	reject	X	5159
 remainder	remainder	X	5159
 schemes	schemes	X	5159
-screens	screens	X	5159
 seized	seized	X	5159
 semester	semester	X	5159
 sentiment	sentiment	X	5159
@@ -6827,7 +6923,6 @@ convenience	convenience	X	5170
 deliberately	deliberately	X	5170
 diamonds	diamonds	X	5170
 diana	diana	X	5170
-dictionary	dictionary	X	5170
 dignity	dignity	X	5170
 dimension	dimension	X	5170
 disappointing	disappointing	X	5170
@@ -6998,7 +7093,6 @@ seo	seo	X	5182
 sheer	sheer	X	5182
 shifts	shifts	X	5182
 simpson	simpson	X	5182
-smallest	smallest	X	5182
 specially	specially	X	5182
 stark	stark	X	5182
 struggled	struggled	X	5182
@@ -7325,7 +7419,6 @@ sequel	sequel	X	5217
 shifted	shifted	X	5217
 shifting	shifting	X	5217
 shining	shining	X	5217
-slower	slower	X	5217
 spinning	spinning	X	5217
 stanford	stanford	X	5217
 stepping	stepping	X	5217
@@ -7425,7 +7518,6 @@ runners	runners	X	5229
 sally	sally	X	5229
 scattered	scattered	X	5229
 scout	scout	X	5229
-searched	searched	X	5229
 sexuality	sexuality	X	5229
 shouting	shouting	X	5229
 slap	slap	X	5229
@@ -7467,7 +7559,6 @@ cincinnati	cincinnati	X	5240
 circular	circular	X	5240
 circulation	circulation	X	5240
 clearance	clearance	X	5240
-closes	closes	X	5240
 coincidence	coincidence	X	5240
 comedian	comedian	X	5240
 commands	commands	X	5240
@@ -7520,7 +7611,6 @@ pee	pee	X	5240
 pillow	pillow	X	5241
 pirate	pirate	X	5241
 polar	polar	X	5241
-prediction	prediction	X	5241
 preview	preview	X	5241
 processed	processed	X	5241
 pursuing	pursuing	X	5241
@@ -7545,7 +7635,6 @@ substantially	substantially	X	5241
 suburbs	suburbs	X	5241
 superb	superb	X	5241
 supposedly	supposedly	X	5241
-tab	tab	X	5241
 tendency	tendency	X	5241
 toast	toast	X	5241
 toes	toes	X	5241
@@ -7994,7 +8083,6 @@ pi	pi	X	5287
 polite	polite	X	5287
 productions	productions	X	5287
 professors	professors	X	5287
-quicker	quicker	X	5287
 randy	randy	X	5288
 receipt	receipt	X	5288
 recognise	recognise	X	5288
@@ -8019,7 +8107,6 @@ theology	theology	X	5288
 topped	topped	X	5288
 trails	trails	X	5288
 underwater	underwater	X	5288
-uploaded	uploaded	X	5288
 velocity	velocity	X	5288
 venues	venues	X	5288
 wax	wax	X	5288
@@ -8097,7 +8184,6 @@ offshore	offshore	X	5299
 optional	optional	X	5299
 papa	papa	X	5299
 parked	parked	X	5299
-paste	paste	X	5299
 pioneer	pioneer	X	5299
 plaza	plaza	X	5299
 prescribed	prescribed	X	5299
@@ -8201,7 +8287,6 @@ finishes	finishes	X	5311
 fog	fog	X	5311
 framed	framed	X	5311
 fucks	fucks	X	5311
-gesture	gesture	X	5311
 ghana	ghana	X	5311
 gibson	gibson	X	5311
 gif	gif	X	5311
@@ -8305,7 +8390,6 @@ biography	biography	X	5322
 br	br	X	5322
 broker	broker	X	5322
 bury	bury	X	5323
-cellular	cellular	X	5323
 cocktail	cocktail	X	5323
 cod	cod	X	5323
 conditioning	conditioning	X	5323
@@ -8431,7 +8515,6 @@ carved	carved	X	5334
 choir	choir	X	5334
 clutch	clutch	X	5334
 coconut	coconut	X	5334
-committing	committing	X	5334
 comprising	comprising	X	5334
 confession	confession	X	5334
 consume	consume	X	5334
@@ -8767,7 +8850,6 @@ sucked	sucked	X	5358
 sunlight	sunlight	X	5358
 surf	surf	X	5358
 symbolic	symbolic	X	5358
-sync	sync	X	5358
 taxpayer	taxpayer	X	5358
 tempted	tempted	X	5358
 thrust	thrust	X	5358
@@ -9014,7 +9096,6 @@ tournaments	tournaments	X	5382
 travelers	travelers	X	5382
 treason	treason	X	5382
 trustees	trustees	X	5382
-typing	typing	X	5382
 urine	urine	X	5382
 vanilla	vanilla	X	5382
 vermont	vermont	X	5382
@@ -9066,7 +9147,6 @@ discourse	discourse	X	5393
 distances	distances	X	5393
 dominance	dominance	X	5393
 donors	donors	X	5393
-downloaded	downloaded	X	5393
 economically	economically	X	5393
 entertain	entertain	X	5393
 evaluated	evaluated	X	5393
@@ -9142,7 +9222,6 @@ reset	reset	X	5394
 sage	sage	X	5394
 shave	shave	X	5394
 sickness	sickness	X	5394
-simpler	simpler	X	5394
 sinking	sinking	X	5394
 slots	slots	X	5394
 sorted	sorted	X	5394
@@ -9544,7 +9623,6 @@ psychic	psychic	X	5429
 psychologist	psychologist	X	5429
 puppet	puppet	X	5429
 reproductive	reproductive	X	5429
-requesting	requesting	X	5429
 responds	responds	X	5429
 restrict	restrict	X	5429
 retiring	retiring	X	5429
@@ -9611,7 +9689,6 @@ comparisons	comparisons	X	5441
 constable	constable	X	5441
 cooperate	cooperate	X	5441
 coordinated	coordinated	X	5441
-copied	copied	X	5441
 counselor	counselor	X	5441
 cp	cp	X	5441
 curb	curb	X	5441
@@ -10272,7 +10349,6 @@ marrying	marrying	X	5488
 maths	maths	X	5488
 memes	memes	X	5488
 mentioning	mentioning	X	5488
-merge	merge	X	5488
 mesh	mesh	X	5488
 migrant	migrant	X	5488
 mohammed	mohammed	X	5488
@@ -10538,7 +10614,6 @@ commodities	commodities	X	5512
 confessed	confessed	X	5512
 constituents	constituents	X	5512
 contention	contention	X	5512
-converting	converting	X	5512
 covenant	covenant	X	5512
 crafts	crafts	X	5512
 das	das	X	5512
@@ -10751,7 +10826,6 @@ marilyn	marilyn	X	5524
 markers	markers	X	5524
 mayo	mayo	X	5524
 michel	michel	X	5524
-microphone	microphone	X	5524
 miniature	miniature	X	5524
 monks	monks	X	5524
 motto	motto	X	5524
@@ -10914,7 +10988,6 @@ induction	induction	X	5536
 infrared	infrared	X	5536
 insists	insists	X	5536
 instability	instability	X	5536
-installing	installing	X	5536
 invites	invites	X	5536
 irene	irene	X	5536
 irving	irving	X	5536
@@ -11064,7 +11137,6 @@ dietary	dietary	X	5548
 dissertation	dissertation	X	5548
 dividends	dividends	X	5548
 domination	domination	X	5548
-downloading	downloading	X	5548
 ec	ec	X	5548
 emission	emission	X	5548
 ethan	ethan	X	5548
@@ -11336,7 +11408,6 @@ strengthened	strengthened	X	5561
 taco	taco	X	5561
 takeover	takeover	X	5561
 taliban	taliban	X	5561
-tapped	tapped	X	5561
 thor	thor	X	5561
 thumbs	thumbs	X	5561
 tinder	tinder	X	5561
@@ -11347,7 +11418,6 @@ troop	troop	X	5561
 truths	truths	X	5561
 underestimate	underestimate	X	5561
 uni	uni	X	5561
-updating	updating	X	5561
 urges	urges	X	5561
 wallpaper	wallpaper	X	5561
 wasnt	wasnt	X	5561
@@ -11379,7 +11449,6 @@ communal	communal	X	5572
 compliments	compliments	X	5572
 consortium	consortium	X	5572
 controllers	controllers	X	5572
-copying	copying	X	5572
 countdown	countdown	X	5572
 courier	courier	X	5572
 danced	danced	X	5572
@@ -11596,7 +11665,6 @@ lure	lure	X	5584
 malicious	malicious	X	5584
 mattress	mattress	X	5584
 meredith	meredith	X	5584
-merged	merged	X	5584
 merits	merits	X	5584
 mist	mist	X	5584
 mole	mole	X	5584
@@ -11986,7 +12054,6 @@ saul	saul	X	5608
 seafood	seafood	X	5609
 shakes	shakes	X	5609
 signaling	signaling	X	5609
-simplest	simplest	X	5609
 slash	slash	X	5609
 spaghetti	spaghetti	X	5609
 speedy	speedy	X	5609
@@ -12249,7 +12316,6 @@ distorted	distorted	X	5632
 divers	divers	X	5632
 dividing	dividing	X	5632
 dow	dow	X	5632
-downloads	downloads	X	5632
 drastic	drastic	X	5632
 edible	edible	X	5632
 edmund	edmund	X	5632
@@ -12262,7 +12328,6 @@ fax	fax	X	5632
 fiat	fiat	X	5632
 fiona	fiona	X	5632
 firefighters	firefighters	X	5632
-flick	flick	X	5632
 fowler	fowler	X	5632
 funky	funky	X	5632
 gag	gag	X	5632
@@ -12407,7 +12472,6 @@ coolest	coolest	X	5644
 currencies	currencies	X	5644
 damp	damp	X	5644
 danielle	danielle	X	5644
-databases	databases	X	5644
 debit	debit	X	5644
 demolition	demolition	X	5644
 denis	denis	X	5644
@@ -12942,7 +13006,6 @@ compatibility	compatibility	X	5680
 conditional	conditional	X	5680
 congratulate	congratulate	X	5680
 constructing	constructing	X	5680
-converts	converts	X	5680
 coordinating	coordinating	X	5680
 cortex	cortex	X	5680
 courageous	courageous	X	5680
@@ -13081,7 +13144,6 @@ vaccination	vaccination	X	5681
 valerie	valerie	X	5681
 valves	valves	X	5681
 vampires	vampires	X	5681
-vibration	vibration	X	5681
 vitamins	vitamins	X	5681
 wartime	wartime	X	5681
 weakest	weakest	X	5681
@@ -13241,7 +13303,6 @@ stamped	stamped	X	5693
 steroids	steroids	X	5693
 stitches	stitches	X	5693
 subsidiaries	subsidiaries	X	5693
-swipe	swipe	X	5693
 tang	tang	X	5693
 tango	tango	X	5693
 telecom	telecom	X	5693
@@ -13277,7 +13338,6 @@ berries	berries	X	5704
 blitz	blitz	X	5704
 blockade	blockade	X	5704
 bosnia	bosnia	X	5704
-brightness	brightness	X	5704
 bruins	bruins	X	5704
 brushed	brushed	X	5704
 burma	burma	X	5704
@@ -13622,7 +13682,6 @@ sweaty	sweaty	X	5717
 tailored	tailored	X	5717
 tame	tame	X	5717
 tanner	tanner	X	5717
-taps	taps	X	5717
 tf	tf	X	5717
 thinner	thinner	X	5717
 thugs	thugs	X	5717
@@ -14442,7 +14501,6 @@ truce	truce	X	5766
 tsunami	tsunami	X	5766
 turbines	turbines	X	5766
 turmoil	turmoil	X	5766
-typed	typed	X	5766
 tyranny	tyranny	X	5766
 tyres	tyres	X	5766
 unfit	unfit	X	5766
@@ -14511,7 +14569,6 @@ cuff	cuff	X	5777
 curling	curling	X	5777
 cyclone	cyclone	X	5777
 dedicate	dedicate	X	5777
-deleting	deleting	X	5777
 delusional	delusional	X	5777
 deposition	deposition	X	5777
 derive	derive	X	5777
@@ -14897,7 +14954,6 @@ coco	coco	X	5801
 coincide	coincide	X	5801
 comedians	comedians	X	5801
 commemorate	commemorate	X	5801
-commits	commits	X	5801
 concurrent	concurrent	X	5801
 corrupted	corrupted	X	5801
 coventry	coventry	X	5801
@@ -15812,7 +15868,6 @@ mara	mara	X	5851
 marquis	marquis	X	5851
 mayhem	mayhem	X	5851
 mens	mens	X	5851
-merging	merging	X	5851
 mistakenly	mistakenly	X	5851
 mould	mould	X	5851
 neuroscience	neuroscience	X	5851
@@ -15936,7 +15991,6 @@ chilean	chilean	X	5862
 clauses	clauses	X	5862
 clumsy	clumsy	X	5862
 commuter	commuter	X	5862
-composing	composing	X	5862
 contingency	contingency	X	5862
 coworkers	coworkers	X	5862
 cupboard	cupboard	X	5862
@@ -15956,7 +16010,6 @@ doubted	doubted	X	5862
 downing	downing	X	5862
 duly	duly	X	5863
 dusk	dusk	X	5863
-edits	edits	X	5863
 enchanted	enchanted	X	5863
 environmentally	environmentally	X	5863
 episcopal	episcopal	X	5863
@@ -16299,7 +16352,6 @@ referees	referees	X	5875
 reinforcement	reinforcement	X	5875
 relegation	relegation	X	5875
 repertoire	repertoire	X	5875
-repository	repository	X	5875
 reversing	reversing	X	5875
 rican	rican	X	5875
 rumble	rumble	X	5875
@@ -16333,7 +16385,6 @@ trunks	trunks	X	5876
 tummy	tummy	X	5876
 unjust	unjust	X	5876
 upbringing	upbringing	X	5876
-uploading	uploading	X	5876
 vaughan	vaughan	X	5876
 venezuelan	venezuelan	X	5876
 vis	vis	X	5876
@@ -16498,7 +16549,6 @@ prohibits	prohibits	X	5888
 pronouns	pronouns	X	5888
 proton	proton	X	5888
 psyche	psyche	X	5888
-quickest	quickest	X	5888
 redesign	redesign	X	5888
 relocated	relocated	X	5888
 reluctance	reluctance	X	5888
@@ -16556,7 +16606,6 @@ agile	agile	X	5899
 aides	aides	X	5899
 anonymously	anonymously	X	5899
 aristotle	aristotle	X	5899
-artifact	artifact	X	5899
 austerity	austerity	X	5899
 awfully	awfully	X	5899
 axes	axes	X	5899
@@ -17565,7 +17614,6 @@ kan	kan	X	5949
 kaplan	kaplan	X	5949
 kinky	kinky	X	5949
 landings	landings	X	5949
-launcher	launcher	X	5949
 ld	ld	X	5949
 legality	legality	X	5949
 lenny	lenny	X	5949
@@ -18092,7 +18140,6 @@ senseless	senseless	X	5974
 sermons	sermons	X	5974
 seventeenth	seventeenth	X	5974
 sha	sha	X	5974
-shortcut	shortcut	X	5974
 sikh	sikh	X	5974
 skye	skye	X	5974
 slamming	slamming	X	5974
@@ -21047,7 +21094,6 @@ earners	earners	X	6122
 eel	eel	X	6122
 eiffel	eiffel	X	6122
 embryonic	embryonic	X	6122
-emoji	emoji	X	6122
 encountering	encountering	X	6122
 endanger	endanger	X	6122
 eos	eos	X	6122
@@ -22091,7 +22137,6 @@ breakdowns	breakdowns	X	6172
 breathless	breathless	X	6172
 briefed	briefed	X	6172
 brownies	brownies	X	6172
-browsers	browsers	X	6172
 brunei	brunei	X	6172
 bst	bst	X	6172
 cabs	cabs	X	6172
@@ -23179,7 +23224,6 @@ wd	wd	X	6211
 westerners	westerners	X	6211
 whistler	whistler	X	6211
 windmill	windmill	X	6211
-workflow	workflow	X	6211
 worthington	worthington	X	6211
 wrapper	wrapper	X	6211
 ymca	ymca	X	6211
@@ -24027,7 +24071,6 @@ sighed	sighed	X	6248
 sizzling	sizzling	X	6248
 skillful	skillful	X	6248
 skywalker	skywalker	X	6248
-slowest	slowest	X	6248
 sonata	sonata	X	6249
 soulful	soulful	X	6249
 southend	southend	X	6249
@@ -24058,7 +24101,6 @@ unbreakable	unbreakable	X	6249
 undermines	undermines	X	6249
 unmatched	unmatched	X	6249
 upheaval	upheaval	X	6249
-uploads	uploads	X	6249
 urbana	urbana	X	6249
 vaccinations	vaccinations	X	6249
 valentino	valentino	X	6249
@@ -26281,7 +26323,6 @@ serpentine	serpentine	X	6338
 shinji	shinji	X	6338
 shuffling	shuffling	X	6338
 sie	sie	X	6338
-signup	signup	X	6338
 skirmish	skirmish	X	6338
 slough	slough	X	6338
 snippets	snippets	X	6338
@@ -27576,7 +27617,6 @@ overlord	overlord	X	6389
 overuse	overuse	X	6389
 panned	panned	X	6389
 papacy	papacy	X	6389
-pasted	pasted	X	6389
 patreon	patreon	X	6389
 pdt	pdt	X	6389
 perfumes	perfumes	X	6389
@@ -27840,7 +27880,6 @@ innovator	innovator	X	6401
 intermission	intermission	X	6401
 iqbal	iqbal	X	6401
 irreplaceable	irreplaceable	X	6401
-kanji	kanji	X	6401
 kh	kh	X	6401
 kilogram	kilogram	X	6401
 kn	kn	X	6401
@@ -29569,7 +29608,6 @@ ebert	ebert	X	6466
 edwardian	edwardian	X	6466
 elector	elector	X	6466
 eloquently	eloquently	X	6466
-emojis	emojis	X	6466
 expendable	expendable	X	6466
 factoring	factoring	X	6466
 falkirk	falkirk	X	6466
@@ -29764,7 +29802,6 @@ sugarcane	sugarcane	X	6467
 sundown	sundown	X	6467
 suspecting	suspecting	X	6467
 swingers	swingers	X	6467
-swiping	swiping	X	6467
 synths	synths	X	6467
 takeaways	takeaways	X	6467
 talker	talker	X	6467
@@ -29806,7 +29843,6 @@ weirdos	weirdos	X	6467
 wentz	wentz	X	6467
 westinghouse	westinghouse	X	6467
 whirl	whirl	X	6467
-widget	widget	X	6467
 wineries	wineries	X	6467
 witt	witt	X	6467
 woodbridge	woodbridge	X	6467
@@ -29897,7 +29933,6 @@ darfur	darfur	X	6479
 debtors	debtors	X	6479
 debunked	debunked	X	6479
 decorator	decorator	X	6479
-deletes	deletes	X	6479
 delgado	delgado	X	6479
 delirious	delirious	X	6479
 denser	denser	X	6479
@@ -29985,7 +30020,6 @@ incursion	incursion	X	6479
 inexcusable	inexcusable	X	6479
 influencer	influencer	X	6479
 inhibitory	inhibitory	X	6479
-installs	installs	X	6479
 integrative	integrative	X	6479
 intl	intl	X	6479
 inuit	inuit	X	6479
@@ -30150,7 +30184,6 @@ ubisoft	ubisoft	X	6480
 undertakes	undertakes	X	6480
 unending	unending	X	6480
 unforgiving	unforgiving	X	6480
-uninstall	uninstall	X	6480
 unplug	unplug	X	6480
 unproven	unproven	X	6480
 usain	usain	X	6480
@@ -30197,7 +30230,6 @@ astor	astor	X	6491
 astounded	astounded	X	6491
 auld	auld	X	6491
 austrians	austrians	X	6491
-autocorrect	autocorrect	X	6491
 baht	baht	X	6491
 barrington	barrington	X	6491
 bec	bec	X	6491
@@ -31559,7 +31591,6 @@ meier	meier	X	6531
 melons	melons	X	6531
 melton	melton	X	6531
 mem	mem	X	6531
-merges	merges	X	6531
 meteors	meteors	X	6531
 methylation	methylation	X	6531
 micky	micky	X	6531
@@ -31670,7 +31701,6 @@ subtraction	subtraction	X	6532
 sufi	sufi	X	6532
 summing	summing	X	6532
 sutra	sutra	X	6532
-swiped	swiped	X	6532
 sybil	sybil	X	6532
 synagogues	synagogues	X	6532
 tartan	tartan	X	6532
@@ -32202,7 +32232,6 @@ civics	civics	X	6557
 clamped	clamped	X	6557
 claps	claps	X	6557
 clementine	clementine	X	6557
-clipboard	clipboard	X	6557
 compensatory	compensatory	X	6557
 concedes	concedes	X	6557
 conceptions	conceptions	X	6557
@@ -35072,7 +35101,6 @@ jud	jud	X	6649
 judson	judson	X	6649
 juke	juke	X	6649
 juneau	juneau	X	6649
-kana	kana	X	6649
 katarina	katarina	X	6649
 kenji	kenji	X	6649
 kiel	kiel	X	6649
@@ -35959,7 +35987,6 @@ parliamentarian	parliamentarian	X	6676
 partied	partied	X	6676
 passable	passable	X	6676
 pasteur	pasteur	X	6676
-pasting	pasting	X	6676
 patted	patted	X	6676
 pease	pease	X	6676
 peels	peels	X	6676
@@ -42352,7 +42379,6 @@ sutcliffe	sutcliffe	X	6864
 svg	svg	X	6864
 swank	swank	X	6864
 swerving	swerving	X	6864
-swipes	swipes	X	6864
 syfy	syfy	X	6864
 syriac	syriac	X	6864
 tacks	tacks	X	6864
@@ -45704,7 +45730,6 @@ cleve	cleve	X	6959
 coaxed	coaxed	X	6959
 colloidal	colloidal	X	6959
 colville	colville	X	6959
-commited	commited	X	6959
 conceptualize	conceptualize	X	6959
 concurrency	concurrency	X	6959
 confidante	confidante	X	6959
@@ -50063,7 +50088,6 @@ colliers	colliers	X	7070
 colourless	colourless	X	7070
 commutative	commutative	X	7070
 compaction	compaction	X	7070
-composes	composes	X	7070
 computes	computes	X	7070
 concours	concours	X	7070
 conformance	conformance	X	7070
@@ -51490,7 +51514,6 @@ palacio	palacio	X	7099
 papadopoulos	papadopoulos	X	7099
 paragliding	paragliding	X	7099
 paramore	paramore	X	7099
-pastes	pastes	X	7099
 pasteurized	pasteurized	X	7099
 pasties	pasties	X	7099
 paulinho	paulinho	X	7099
@@ -54049,7 +54072,6 @@ windings	windings	X	7157
 witte	witte	X	7157
 wollaston	wollaston	X	7157
 woodall	woodall	X	7157
-workflows	workflows	X	7157
 worshipper	worshipper	X	7157
 xb	xb	X	7157
 xj	xj	X	7157
@@ -61332,7 +61354,6 @@ jsp	jsp	X	7327
 kabaddi	kabaddi	X	7327
 kaga	kaga	X	7327
 karn	karn	X	7327
-katakana	katakana	X	7327
 kayne	kayne	X	7327
 kemi	kemi	X	7327
 khali	khali	X	7327
@@ -64100,7 +64121,6 @@ hearken	hearken	X	7385
 hegarty	hegarty	X	7385
 henk	henk	X	7385
 hersey	hersey	X	7385
-hiragana	hiragana	X	7385
 histrionic	histrionic	X	7385
 hoary	hoary	X	7385
 hoffenheim	hoffenheim	X	7385
@@ -72342,7 +72362,6 @@ avb	avb	X	7549
 avoca	avoca	X	7549
 baar	baar	X	7549
 babadook	babadook	X	7549
-backspace	backspace	X	7549
 bacteriophage	bacteriophage	X	7549
 baga	baga	X	7549
 baie	baie	X	7549
@@ -84850,7 +84869,6 @@ columbiana	columbiana	X	7768
 colusa	colusa	X	7768
 combusted	combusted	X	7768
 comicon	comicon	X	7768
-commiting	commiting	X	7768
 comptes	comptes	X	7768
 concertmaster	concertmaster	X	7768
 concho	concho	X	7768

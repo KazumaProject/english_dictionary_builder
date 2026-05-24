@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="1-grams_score_cost_pos_combined_with_ner">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/1-grams_score_cost_pos_combined_with_ner.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

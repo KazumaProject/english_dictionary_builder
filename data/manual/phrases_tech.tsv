@@ -1,0 +1,16 @@
+input_phrase	output_phrase	pos_tag	score
+opensource	open source	TECH_PHRASE	1300
+githubactions	GitHub Actions	TECH_PHRASE	1500
+pullrequest	pull request	TECH_PHRASE	1500
+releaseartifact	release artifact	TECH_PHRASE	1800
+githubworkflow	GitHub workflow	TECH_PHRASE	1800
+continuousintegration	continuous integration	TECH_PHRASE	1900
+unittest	unit test	TECH_PHRASE	1900
+buildscript	build script	TECH_PHRASE	1900
+androidapp	Android app	TECH_PHRASE	1700
+mobileapp	mobile app	TECH_PHRASE	1700
+webapp	web app	TECH_PHRASE	1700
+databaseclient	database client	TECH_PHRASE	1900
+apiserver	API server	TECH_PHRASE	1800
+jsonfile	JSON file	TECH_PHRASE	1800
+yamlfile	YAML file	TECH_PHRASE	1900

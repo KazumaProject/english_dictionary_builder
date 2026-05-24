@@ -1,0 +1,16 @@
+input_phrase	output_phrase	pos_tag	score
+androidkeyboard	Android keyboard	TECH_PHRASE	1500
+japanesekeyboard	Japanese keyboard	TECH_PHRASE	1500
+inputmethod	input method	TECH_PHRASE	1500
+inputmethodeditor	Input Method Editor	TECH_PHRASE	1500
+softwarekeyboard	software keyboard	TECH_PHRASE	1700
+onscreenkeyboard	on screen keyboard	TECH_PHRASE	1800
+keyboardlayout	keyboard layout	TECH_PHRASE	1700
+qwertylayout	QWERTY layout	TECH_PHRASE	1800
+romajiinput	romaji input	TECH_PHRASE	1800
+kanainput	kana input	TECH_PHRASE	1800
+flickinput	flick input	TECH_PHRASE	1800
+inputcandidate	input candidate	TECH_PHRASE	1900
+conversioncandidate	conversion candidate	TECH_PHRASE	1900
+predictivetext	predictive text	TECH_PHRASE	1800
+clipboardhistory	clipboard history	TECH_PHRASE	1900

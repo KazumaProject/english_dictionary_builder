@@ -1,0 +1,47 @@
+input_phrase	output_phrase	pos_tag	score
+goodmorning	good morning	PHRASE	1200
+goodnight	good night	PHRASE	1200
+howareyou	how are you	PHRASE	1200
+thankyou	thank you	PHRASE	1200
+letmeknow	let me know	PHRASE	1300
+opensource	open source	TECH_PHRASE	1300
+ofcourse	of course	PHRASE	1400
+rightnow	right now	PHRASE	1400
+seeyou	see you	PHRASE	1400
+androidkeyboard	Android keyboard	TECH_PHRASE	1500
+aswell	as well	PHRASE	1500
+atleast	at least	PHRASE	1500
+bytheway	by the way	PHRASE	1500
+githubactions	GitHub Actions	TECH_PHRASE	1500
+inputmethod	input method	TECH_PHRASE	1500
+inputmethodeditor	Input Method Editor	TECH_PHRASE	1500
+japanesekeyboard	Japanese keyboard	TECH_PHRASE	1500
+pullrequest	pull request	TECH_PHRASE	1500
+inprogress	in progress	PHRASE	1600
+seeyoulater	see you later	PHRASE	1600
+talktoyou	talk to you	PHRASE	1600
+androidapp	Android app	TECH_PHRASE	1700
+inadvance	in advance	PHRASE	1700
+keyboardlayout	keyboard layout	TECH_PHRASE	1700
+mobileapp	mobile app	TECH_PHRASE	1700
+softwarekeyboard	software keyboard	TECH_PHRASE	1700
+webapp	web app	TECH_PHRASE	1700
+apiserver	API server	TECH_PHRASE	1800
+flickinput	flick input	TECH_PHRASE	1800
+githubworkflow	GitHub workflow	TECH_PHRASE	1800
+jsonfile	JSON file	TECH_PHRASE	1800
+kanainput	kana input	TECH_PHRASE	1800
+nospace	no space	PHRASE	1800
+onscreenkeyboard	on screen keyboard	TECH_PHRASE	1800
+predictivetext	predictive text	TECH_PHRASE	1800
+qwertylayout	QWERTY layout	TECH_PHRASE	1800
+releaseartifact	release artifact	TECH_PHRASE	1800
+romajiinput	romaji input	TECH_PHRASE	1800
+buildscript	build script	TECH_PHRASE	1900
+clipboardhistory	clipboard history	TECH_PHRASE	1900
+continuousintegration	continuous integration	TECH_PHRASE	1900
+conversioncandidate	conversion candidate	TECH_PHRASE	1900
+databaseclient	database client	TECH_PHRASE	1900
+inputcandidate	input candidate	TECH_PHRASE	1900
+unittest	unit test	TECH_PHRASE	1900
+yamlfile	YAML file	TECH_PHRASE	1900
