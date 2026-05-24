@@ -1,6 +1,6 @@
 {
   "configuration": {
-    "word_freq_top_n": 100000,
+    "word_freq_top_n": 200000,
     "word_freq_wordlist": "large",
     "enable_corpus": false,
     "enable_corpus_bigram": false,
