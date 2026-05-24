@@ -1,0 +1,786 @@
+{
+  "configuration": {
+    "word_freq_top_n": 200000,
+    "word_freq_wordlist": "large",
+    "enable_corpus": false,
+    "enable_corpus_bigram": false,
+    "corpus_max_docs": 0,
+    "unigram_output_filename": "1-grams_score_cost_pos_combined_with_ner.txt",
+    "unigram_zip_filename": "1-grams_score_cost_pos_combined_with_ner.zip",
+    "phrase_output_filename": "english_phrases.tsv",
+    "phrase_zip_filename": "english_phrases.zip",
+    "output_filename": "1-grams_score_cost_pos_combined_with_ner.txt",
+    "zip_filename": "1-grams_score_cost_pos_combined_with_ner.zip"
+  },
+  "sources": {
+    "deny_words": {
+      "path": "data/manual/deny_words.tsv",
+      "read_lines": 4,
+      "valid_words": 0
+    },
+    "manual_unigrams": {
+      "basic_words": {
+        "path": "data/manual/basic_words.tsv",
+        "read_rows": 110,
+        "valid_rows": 110,
+        "excluded_rows": 0
+      },
+      "contractions": {
+        "path": "data/manual/contractions.tsv",
+        "read_rows": 41,
+        "valid_rows": 41,
+        "excluded_rows": 0
+      },
+      "spelling_variants": {
+        "path": "data/manual/spelling_variants.tsv",
+        "read_rows": 34,
+        "valid_rows": 34,
+        "excluded_rows": 0
+      },
+      "tech_common_words": {
+        "path": "data/manual/tech_common_words.tsv",
+        "read_rows": 42,
+        "valid_rows": 42,
+        "excluded_rows": 0
+      },
+      "common_app_words": {
+        "path": "data/manual/common_app_words.tsv",
+        "read_rows": 36,
+        "valid_rows": 36,
+        "excluded_rows": 0
+      },
+      "mobile_words": {
+        "path": "data/manual/mobile_words.tsv",
+        "read_rows": 29,
+        "valid_rows": 29,
+        "excluded_rows": 0
+      },
+      "android_ime_words": {
+        "path": "data/manual/android_ime_words.tsv",
+        "read_rows": 28,
+        "valid_rows": 28,
+        "excluded_rows": 0
+      },
+      "software_dev_words": {
+        "path": "data/manual/software_dev_words.tsv",
+        "read_rows": 32,
+        "valid_rows": 32,
+        "excluded_rows": 0
+      },
+      "product_brand_words": {
+        "path": "data/manual/product_brand_words.tsv",
+        "read_rows": 19,
+        "valid_rows": 19,
+        "excluded_rows": 0
+      }
+    },
+    "manual_phrases": {
+      "phrases_common": {
+        "path": "data/manual/phrases_common.tsv",
+        "read_rows": 16,
+        "valid_rows": 16,
+        "excluded_rows": 0
+      },
+      "phrases_mobile_ime": {
+        "path": "data/manual/phrases_mobile_ime.tsv",
+        "read_rows": 15,
+        "valid_rows": 15,
+        "excluded_rows": 0
+      },
+      "phrases_tech": {
+        "path": "data/manual/phrases_tech.tsv",
+        "read_rows": 15,
+        "valid_rows": 15,
+        "excluded_rows": 0
+      }
+    },
+    "manual_inflection_lemmas": {
+      "path": "data/manual/inflection_lemmas.tsv",
+      "read_rows": 43,
+      "valid_rows": 43,
+      "excluded_rows": 0
+    },
+    "manual_inflection_overrides": {
+      "path": "data/manual/inflection_overrides.tsv",
+      "read_rows": 27,
+      "valid_rows": 27,
+      "excluded_rows": 0
+    },
+    "wordfreq": {
+      "requested_top_n": 100000,
+      "wordlist": "large",
+      "read_words": 115999,
+      "valid_words": 100000,
+      "excluded_words": 6208,
+      "excluded_by_reason": {
+        "invalid_format": 6208
+      },
+      "min_zipf": 1.9,
+      "max_zipf": 7.73
+    },
+    "scowl": {
+      "path": "external_sources/scowl/words.txt",
+      "present": false,
+      "read_words": 0,
+      "valid_words": 0,
+      "excluded_words": 0
+    },
+    "inflections": {
+      "enabled": true,
+      "lemma_row_count": 43,
+      "override_row_count": 27,
+      "generated_candidate_count": 125,
+      "accepted_count": 121,
+      "rejected_count": 4,
+      "rejected_by_reason": {
+        "not_in_validation_source": 4
+      },
+      "accepted_source_counts": {
+        "wordfreq": 121
+      },
+      "accepted_entry_source_counts": {
+        "regular": 94,
+        "override": 27
+      },
+      "validation_sources": [
+        "wordfreq"
+      ],
+      "accepted_samples": [
+        {
+          "lemma": "work",
+          "form": "works",
+          "pos_tag": "VERB",
+          "inflection_type": "third_person_s",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 2050
+        },
+        {
+          "lemma": "work",
+          "form": "worked",
+          "pos_tag": "VERB",
+          "inflection_type": "past_ed",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 2150
+        },
+        {
+          "lemma": "work",
+          "form": "working",
+          "pos_tag": "VERB",
+          "inflection_type": "present_participle_ing",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 2150
+        },
+        {
+          "lemma": "play",
+          "form": "plays",
+          "pos_tag": "VERB",
+          "inflection_type": "third_person_s",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 2050
+        },
+        {
+          "lemma": "play",
+          "form": "played",
+          "pos_tag": "VERB",
+          "inflection_type": "past_ed",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 2150
+        },
+        {
+          "lemma": "play",
+          "form": "playing",
+          "pos_tag": "VERB",
+          "inflection_type": "present_participle_ing",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 2150
+        },
+        {
+          "lemma": "open",
+          "form": "opens",
+          "pos_tag": "VERB",
+          "inflection_type": "third_person_s",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 1950
+        },
+        {
+          "lemma": "open",
+          "form": "opened",
+          "pos_tag": "VERB",
+          "inflection_type": "past_ed",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 2050
+        },
+        {
+          "lemma": "open",
+          "form": "opening",
+          "pos_tag": "VERB",
+          "inflection_type": "present_participle_ing",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 2050
+        },
+        {
+          "lemma": "close",
+          "form": "closes",
+          "pos_tag": "VERB",
+          "inflection_type": "third_person_s",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 1950
+        },
+        {
+          "lemma": "close",
+          "form": "closed",
+          "pos_tag": "VERB",
+          "inflection_type": "past_ed",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 2050
+        },
+        {
+          "lemma": "close",
+          "form": "closing",
+          "pos_tag": "VERB",
+          "inflection_type": "present_participle_ing",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 2050
+        },
+        {
+          "lemma": "update",
+          "form": "updates",
+          "pos_tag": "VERB",
+          "inflection_type": "third_person_s",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 1950
+        },
+        {
+          "lemma": "update",
+          "form": "updated",
+          "pos_tag": "VERB",
+          "inflection_type": "past_ed",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 2050
+        },
+        {
+          "lemma": "update",
+          "form": "updating",
+          "pos_tag": "VERB",
+          "inflection_type": "present_participle_ing",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 2050
+        },
+        {
+          "lemma": "install",
+          "form": "installs",
+          "pos_tag": "VERB",
+          "inflection_type": "third_person_s",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 2050
+        },
+        {
+          "lemma": "install",
+          "form": "installed",
+          "pos_tag": "VERB",
+          "inflection_type": "past_ed",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 2150
+        },
+        {
+          "lemma": "install",
+          "form": "installing",
+          "pos_tag": "VERB",
+          "inflection_type": "present_participle_ing",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 2150
+        },
+        {
+          "lemma": "download",
+          "form": "downloads",
+          "pos_tag": "VERB",
+          "inflection_type": "third_person_s",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 1950
+        },
+        {
+          "lemma": "download",
+          "form": "downloaded",
+          "pos_tag": "VERB",
+          "inflection_type": "past_ed",
+          "entry_source": "regular",
+          "validation_sources": [
+            "wordfreq"
+          ],
+          "score": 2050
+        }
+      ]
+    },
+    "corpus": {
+      "enabled": false,
+      "read_documents": 0,
+      "valid_words": 0,
+      "excluded_words": 0,
+      "datasets": [
+        {
+          "name": "wikitext",
+          "config": "wikitext-103-v1",
+          "split": "train",
+          "column": "text"
+        }
+      ]
+    },
+    "corpus_bigram": {
+      "enabled": false,
+      "requested": false,
+      "valid_phrases": 0,
+      "note": "Reserved for future deterministic corpus bigram extraction; manual phrase TSVs are the only active phrase source."
+    }
+  },
+  "merge": {
+    "unigram": {
+      "input_entries": 100492,
+      "output_entries": 100075,
+      "unique_input_words": 100011,
+      "rejected_entries": 0,
+      "source_counts_before_merge": {
+        "manual:basic_words": 110,
+        "manual:contractions": 41,
+        "manual:spelling_variants": 34,
+        "manual:tech_common_words": 42,
+        "manual:common_app_words": 36,
+        "manual:mobile_words": 29,
+        "manual:android_ime_words": 28,
+        "manual:software_dev_words": 32,
+        "manual:product_brand_words": 19,
+        "wordfreq": 100000,
+        "inflection:regular:third_person_s": 22,
+        "inflection:regular:past_ed": 23,
+        "inflection:regular:present_participle_ing": 24,
+        "inflection:regular:plural_s": 12,
+        "inflection:regular:plural_es": 1,
+        "inflection:regular:comparative_er": 6,
+        "inflection:regular:superlative_est": 6,
+        "inflection:override:irregular_present": 13,
+        "inflection:override:irregular_past": 12,
+        "inflection:override:irregular_participle": 2
+      },
+      "source_counts_after_merge": {
+        "manual:basic_words": 110,
+        "manual:contractions": 41,
+        "manual:common_app_words": 36,
+        "manual:tech_common_words": 22,
+        "inflection:override:irregular_present": 8,
+        "manual:android_ime_words": 27,
+        "manual:mobile_words": 25,
+        "inflection:override:irregular_past": 8,
+        "manual:software_dev_words": 23,
+        "wordfreq": 99651,
+        "manual:spelling_variants": 34,
+        "inflection:regular:plural_s": 10,
+        "inflection:regular:third_person_s": 21,
+        "inflection:regular:past_ed": 23,
+        "inflection:regular:present_participle_ing": 22,
+        "inflection:regular:plural_es": 1,
+        "inflection:override:irregular_participle": 1,
+        "inflection:regular:comparative_er": 6,
+        "inflection:regular:superlative_est": 6
+      }
+    },
+    "phrase": {
+      "input_entries": 46,
+      "output_entries": 46,
+      "unique_input_phrases": 46,
+      "rejected_entries": 0,
+      "source_counts_before_merge": {
+        "manual_phrase:phrases_common": 16,
+        "manual_phrase:phrases_mobile_ime": 15,
+        "manual_phrase:phrases_tech": 15
+      },
+      "source_counts_after_merge": {
+        "manual_phrase:phrases_common": 16,
+        "manual_phrase:phrases_tech": 15,
+        "manual_phrase:phrases_mobile_ime": 15
+      }
+    },
+    "source_counts_before_merge": {
+      "manual:basic_words": 110,
+      "manual:contractions": 41,
+      "manual:spelling_variants": 34,
+      "manual:tech_common_words": 42,
+      "manual:common_app_words": 36,
+      "manual:mobile_words": 29,
+      "manual:android_ime_words": 28,
+      "manual:software_dev_words": 32,
+      "manual:product_brand_words": 19,
+      "wordfreq": 100000,
+      "inflection:regular:third_person_s": 22,
+      "inflection:regular:past_ed": 23,
+      "inflection:regular:present_participle_ing": 24,
+      "inflection:regular:plural_s": 12,
+      "inflection:regular:plural_es": 1,
+      "inflection:regular:comparative_er": 6,
+      "inflection:regular:superlative_est": 6,
+      "inflection:override:irregular_present": 13,
+      "inflection:override:irregular_past": 12,
+      "inflection:override:irregular_participle": 2
+    },
+    "source_counts_after_merge": {
+      "manual:basic_words": 110,
+      "manual:contractions": 41,
+      "manual:common_app_words": 36,
+      "manual:tech_common_words": 22,
+      "inflection:override:irregular_present": 8,
+      "manual:android_ime_words": 27,
+      "manual:mobile_words": 25,
+      "inflection:override:irregular_past": 8,
+      "manual:software_dev_words": 23,
+      "wordfreq": 99651,
+      "manual:spelling_variants": 34,
+      "inflection:regular:plural_s": 10,
+      "inflection:regular:third_person_s": 21,
+      "inflection:regular:past_ed": 23,
+      "inflection:regular:present_participle_ing": 22,
+      "inflection:regular:plural_es": 1,
+      "inflection:override:irregular_participle": 1,
+      "inflection:regular:comparative_er": 6,
+      "inflection:regular:superlative_est": 6
+    }
+  },
+  "sample_unigram_entries": [
+    {
+      "input_word": "a",
+      "output_word": "a",
+      "pos_tag": "DET",
+      "score": 700,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "an",
+      "output_word": "an",
+      "pos_tag": "DET",
+      "score": 700,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "i",
+      "output_word": "I",
+      "pos_tag": "PRON",
+      "score": 700,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "is",
+      "output_word": "is",
+      "pos_tag": "AUX",
+      "score": 700,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "of",
+      "output_word": "of",
+      "pos_tag": "ADP",
+      "score": 700,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "the",
+      "output_word": "the",
+      "pos_tag": "DET",
+      "score": 700,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "to",
+      "output_word": "to",
+      "pos_tag": "ADP",
+      "score": 700,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "you",
+      "output_word": "you",
+      "pos_tag": "PRON",
+      "score": 700,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "and",
+      "output_word": "and",
+      "pos_tag": "CCONJ",
+      "score": 750,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "are",
+      "output_word": "are",
+      "pos_tag": "AUX",
+      "score": 750,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "in",
+      "output_word": "in",
+      "pos_tag": "ADP",
+      "score": 750,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "at",
+      "output_word": "at",
+      "pos_tag": "ADP",
+      "score": 800,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "because",
+      "output_word": "because",
+      "pos_tag": "SCONJ",
+      "score": 800,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "but",
+      "output_word": "but",
+      "pos_tag": "CCONJ",
+      "score": 800,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "for",
+      "output_word": "for",
+      "pos_tag": "ADP",
+      "score": 800,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "he",
+      "output_word": "he",
+      "pos_tag": "PRON",
+      "score": 800,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "it",
+      "output_word": "it",
+      "pos_tag": "PRON",
+      "score": 800,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "not",
+      "output_word": "not",
+      "pos_tag": "PART",
+      "score": 800,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "on",
+      "output_word": "on",
+      "pos_tag": "ADP",
+      "score": 800,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "or",
+      "output_word": "or",
+      "pos_tag": "CCONJ",
+      "score": 800,
+      "source": "manual:basic_words"
+    }
+  ],
+  "sample_phrase_entries": [
+    {
+      "input_phrase": "goodmorning",
+      "output_phrase": "good morning",
+      "pos_tag": "PHRASE",
+      "score": 1200,
+      "source": "manual_phrase:phrases_common"
+    },
+    {
+      "input_phrase": "goodnight",
+      "output_phrase": "good night",
+      "pos_tag": "PHRASE",
+      "score": 1200,
+      "source": "manual_phrase:phrases_common"
+    },
+    {
+      "input_phrase": "howareyou",
+      "output_phrase": "how are you",
+      "pos_tag": "PHRASE",
+      "score": 1200,
+      "source": "manual_phrase:phrases_common"
+    },
+    {
+      "input_phrase": "thankyou",
+      "output_phrase": "thank you",
+      "pos_tag": "PHRASE",
+      "score": 1200,
+      "source": "manual_phrase:phrases_common"
+    },
+    {
+      "input_phrase": "letmeknow",
+      "output_phrase": "let me know",
+      "pos_tag": "PHRASE",
+      "score": 1300,
+      "source": "manual_phrase:phrases_common"
+    },
+    {
+      "input_phrase": "opensource",
+      "output_phrase": "open source",
+      "pos_tag": "TECH_PHRASE",
+      "score": 1300,
+      "source": "manual_phrase:phrases_tech"
+    },
+    {
+      "input_phrase": "ofcourse",
+      "output_phrase": "of course",
+      "pos_tag": "PHRASE",
+      "score": 1400,
+      "source": "manual_phrase:phrases_common"
+    },
+    {
+      "input_phrase": "rightnow",
+      "output_phrase": "right now",
+      "pos_tag": "PHRASE",
+      "score": 1400,
+      "source": "manual_phrase:phrases_common"
+    },
+    {
+      "input_phrase": "seeyou",
+      "output_phrase": "see you",
+      "pos_tag": "PHRASE",
+      "score": 1400,
+      "source": "manual_phrase:phrases_common"
+    },
+    {
+      "input_phrase": "androidkeyboard",
+      "output_phrase": "Android keyboard",
+      "pos_tag": "TECH_PHRASE",
+      "score": 1500,
+      "source": "manual_phrase:phrases_mobile_ime"
+    },
+    {
+      "input_phrase": "aswell",
+      "output_phrase": "as well",
+      "pos_tag": "PHRASE",
+      "score": 1500,
+      "source": "manual_phrase:phrases_common"
+    },
+    {
+      "input_phrase": "atleast",
+      "output_phrase": "at least",
+      "pos_tag": "PHRASE",
+      "score": 1500,
+      "source": "manual_phrase:phrases_common"
+    },
+    {
+      "input_phrase": "bytheway",
+      "output_phrase": "by the way",
+      "pos_tag": "PHRASE",
+      "score": 1500,
+      "source": "manual_phrase:phrases_common"
+    },
+    {
+      "input_phrase": "githubactions",
+      "output_phrase": "GitHub Actions",
+      "pos_tag": "TECH_PHRASE",
+      "score": 1500,
+      "source": "manual_phrase:phrases_tech"
+    },
+    {
+      "input_phrase": "inputmethod",
+      "output_phrase": "input method",
+      "pos_tag": "TECH_PHRASE",
+      "score": 1500,
+      "source": "manual_phrase:phrases_mobile_ime"
+    },
+    {
+      "input_phrase": "inputmethodeditor",
+      "output_phrase": "Input Method Editor",
+      "pos_tag": "TECH_PHRASE",
+      "score": 1500,
+      "source": "manual_phrase:phrases_mobile_ime"
+    },
+    {
+      "input_phrase": "japanesekeyboard",
+      "output_phrase": "Japanese keyboard",
+      "pos_tag": "TECH_PHRASE",
+      "score": 1500,
+      "source": "manual_phrase:phrases_mobile_ime"
+    },
+    {
+      "input_phrase": "pullrequest",
+      "output_phrase": "pull request",
+      "pos_tag": "TECH_PHRASE",
+      "score": 1500,
+      "source": "manual_phrase:phrases_tech"
+    },
+    {
+      "input_phrase": "inprogress",
+      "output_phrase": "in progress",
+      "pos_tag": "PHRASE",
+      "score": 1600,
+      "source": "manual_phrase:phrases_common"
+    },
+    {
+      "input_phrase": "seeyoulater",
+      "output_phrase": "see you later",
+      "pos_tag": "PHRASE",
+      "score": 1600,
+      "source": "manual_phrase:phrases_common"
+    }
+  ]
+}

@@ -1,98 +1,273 @@
-# N‑gram Score Calculator / N‑グラムスコア計算ツール
+# English IME dictionary builder
 
-> **English follows Japanese**
+This project generates English IME dictionary artifacts for candidate ranking.
+Unigrams and phrases are intentionally separate artifacts:
 
----
+```text
+1-grams_score_cost_pos_combined_with_ner.txt
+1-grams_score_cost_pos_combined_with_ner.zip
+english_phrases.tsv
+english_phrases.zip
+dictionary_source_summary.json
+```
 
-## 概要 (Overview – JP)
+The unigram TSV columns are:
 
-本プロジェクトは、Wikipedia などの大規模コーパスからユニグラム（1‑gram）の出現頻度を解析し、確率に基づくコストスコアを付与した TXT ファイルを生成する Python スクリプトと CI/CD ワークフローを提供します。spaCy の固有表現抽出 (NER) を活用することで、固有名詞を高精度に識別し、入力メソッド (IME) やスペルチェッカー、その他 NLP タスクに適した単語リストを作成できます。
+```text
+input_word	output_word	pos_tag	score
+```
 
-## Overview (EN)
+The phrase TSV columns are:
 
-This project contains a high‑performance Python script that streams large text datasets (e.g. Wikipedia) from the Hugging Face Hub, counts unigram frequencies, applies a cost score `‑log(p)`, and normalises the result to the 0‑65535 range. Proper nouns are accurately captured via spaCy’s Named‑Entity Recognition (NER). The artefact is a ready‑to‑use TSV, suitable for IMEs, spell‑checkers, and other NLP pipelines.
+```text
+input_phrase	output_phrase	pos_tag	score
+```
 
----
+Lower `score` values rank higher.
 
-## 特徴 (Features)
+## Why stop words are included
 
-* **ストリーミング処理 / Streaming**: `datasets` ライブラリのストリーミング API を用いて、メモリ消費を最小化。
-* **spaCy バッチ処理 / batched spaCy**: `nlp.pipe()` による高速バッチ解析。
-* **固有表現優先 / Entity‑first**: GPE・PERSON など 8 種類の固有表現ラベルを優先してカウント。
-* **確率コスト / Cost score**: `‑log(freq / total)` を 16‑bit 整数にスケール。
-* **GitHub Actions**: タグ Push でスクリプトを実行し artefact (ZIP) を自動リリース。
+English IMEs need function words and stop words as first-class candidates.
+Words such as `because`, `the`, `and`, `you`, `I`, `is`, `are`, `with`, `from`,
+and `about` are common typing targets, not noise. The generator therefore does
+not filter out stop words.
 
----
+## Data sources
 
-## クイックスタート (Quick Start)
+### wordfreq
+
+`wordfreq` is the main unigram vocabulary and frequency-ranking source. It
+combines multiple corpora and exposes English top-word lists plus Zipf
+frequencies, which are suitable for stable IME cost assignment.
+
+Configuration:
 
 ```bash
-# 1. Clone
-$ git clone <repo‑url>
-$ cd n‑gram‑score‑calculator
-
-# 2. Install (Python 3.10+)
-$ pip install -r requirements.txt
-$ python -m spacy download en_core_web_sm
-
-# 3. Run
-$ python main.py
-# → 1-grams_score_cost_pos_combined_with_ner.txt が生成されます。
+WORD_FREQ_TOP_N=100000 python main.py
 ```
 
-### 出力例 / Output Sample
+`WORD_FREQ_TOP_N` defaults to `100000`. The generator fails if the wordfreq
+layer yields fewer than `50000` valid words. `100000` or more unique input words
+is treated as standard coverage, and `200000` or more is treated as high
+coverage by the verifier.
 
+The wordfreq layer:
+
+- reads English words using `top_n_list("en", ..., wordlist="large", ascii_only=True)`
+- scores them using `zipf_frequency(..., "en", wordlist="large")`
+- skips apostrophe forms, URLs, HTML fragments, empty values, numbers, symbols,
+  mixed alphanumeric tokens, and words outside length `1..32`
+- allows one-letter words only when they are `a` or `i`
+- applies `data/manual/deny_words.tsv`
+- writes lowercase `input_word` and lowercase `output_word`
+
+Contractions such as `I'm` and `don't` are handled in
+`data/manual/contractions.tsv`, not by the wordfreq layer.
+
+### Manual unigrams
+
+Manual TSV files are explicit project-authored data and are not filtered by
+`deny_words.tsv`. They are validated strictly: malformed rows, empty fields,
+invalid lowercase input words, control characters, or scores outside
+`0..32767` fail the build.
+
+Current manual unigram sources:
+
+- `data/manual/basic_words.tsv`: high-priority function words, pronouns,
+  auxiliaries, prepositions, and everyday adverbs.
+- `data/manual/contractions.tsv`: apostrophe outputs such as `im -> I'm` and
+  `dont -> don't`.
+- `data/manual/spelling_variants.tsv`: common US, Canadian, and British spelling
+  variants.
+- `data/manual/tech_common_words.tsv`: compatibility source for existing tech
+  and product terms.
+- `data/manual/common_app_words.tsv`: app and account terms.
+- `data/manual/mobile_words.tsv`: mobile device and UI terms.
+- `data/manual/android_ime_words.tsv`: Android IME, keyboard, and Japanese input
+  terms.
+- `data/manual/software_dev_words.tsv`: developer workflow and file format
+  terms.
+- `data/manual/product_brand_words.tsv`: product and brand display spellings.
+- `data/manual/deny_words.tsv`: project-controlled exclusions for wordfreq,
+  corpus, SCOWL, and generated inflections. Manual TSV entries are not filtered
+  by this deny list.
+
+### Inflections
+
+Inflections are generated only for lemmas explicitly listed in:
+
+```text
+data/manual/inflection_lemmas.tsv
+data/manual/inflection_overrides.tsv
 ```
-input_word	output_word	pos_tag	score
-apple	Apple	PROPN	32010
+
+The generator does not mechanically add `s`, `ed`, or `ing` to every wordfreq
+word. Regular generation is limited to these rules:
+
+- `VERB`: `third_person_s`, `past_ed`, `present_participle_ing`
+- `NOUN`: `plural_s`, `plural_es`, `plural_y_to_ies`
+- `ADJ`: `comparative_er`, `superlative_est`
+
+Irregular forms must be listed in `inflection_overrides.tsv`. Generated forms
+are accepted only when the form is lowercase ASCII alphabetic, not present in
+`deny_words.tsv`, and validated by wordfreq or optional SCOWL. When SCOWL is
+absent, wordfreq is the only validation source. Inflection candidate, accepted,
+rejected, validation-source, and override counts are recorded in
+`dictionary_source_summary.json`.
+
+### Phrases and bigrams
+
+Phrase/bigram entries are not mixed into the unigram TSV. They are built as a
+separate artifact:
+
+```text
+english_phrases.tsv
+english_phrases.zip
 ```
 
-| Column (EN)   | 説明 (JP)            | Example |
-| ------------- | ------------------ | ------- |
-| `input_word`  | 小文字化した入力語          | `apple` |
-| `output_word` | 元の表記（固有名詞は大文字）     | `Apple` |
-| `pos_tag`     | spaCy 品詞 / POS tag | `PROPN` |
-| `score`       | 正規化コスト (0‑65535)   | `32010` |
+At present, phrase generation uses only manual phrase sources:
 
----
+- `data/manual/phrases_common.tsv`
+- `data/manual/phrases_mobile_ime.tsv`
+- `data/manual/phrases_tech.tsv`
 
-## 設定ファイル (Configuration)
+`ENABLE_CORPUS_BIGRAM` is reserved in the summary configuration and defaults to
+false. Corpus bigram extraction is not implemented in this build path so GitHub
+Actions output stays deterministic.
 
-```python
-N_GRAM_SIZE = 1          # n in n‑gram (currently 1)
-SCORE_TYPE  = 'cost'     # scoring method
-DATASET_CONFIGS = [
-    {"name":"wikitext","config":"wikitext-103-v1","split":"train","column":"text"},
-]
+### Optional SCOWL / English Speller Database
+
+SCOWL is optional. To use it, place a plain one-word-per-line word list at:
+
+```text
+external_sources/scowl/words.txt
 ```
 
-`DATASET_CONFIGS` に辞書を追加するだけで別コーパスを簡単に追加できます。
+If the file is absent, generation continues with a warning and SCOWL is recorded
+as an unused source. SCOWL is used as optional spell validation, optional
+enrichment, and coverage-report source. wordfreq words are not automatically
+removed just because they are absent from SCOWL.
 
----
+When adding SCOWL locally, keep the upstream license or copyright notice at:
 
-## データソースとライセンス (Data Sources & Licenses)
+```text
+external_sources/scowl/LICENSE_OR_COPYRIGHT.txt
+```
 
-このプロジェクトは外部の公開データセットをストリーミング取得して処理します。各データセットにはそれぞれ固有のライセンスが存在するため、使用・再配布時には必ず確認してください。
+SCOWL / English Speller Database project page: http://wordlist.aspell.net/
 
-| Dataset             | License                                   | 注意事項                           |
-| ------------------- | ----------------------------------------- | ------------------------------ |
-| **wikitext‑103‑v1** | Derived from Wikipedia → **CC BY‑SA 3.0** | 派生物を配布する場合は同ライセンスでの共有と帰属表示が必要。 |
+### Optional corpus layer
 
-> **ワンポイント**: 本スクリプトが出力する成果物 は「個々の単語」とその頻度のみを含むため、一般的には著作物性が極めて低く、CC BY‑SA のコピーライト対象外と考えられます。ただし、大量の元本文を再配布する場合や、別データセットを追加する場合は、そのライセンス条項に従ってください。
+The previous Wikitext/spaCy corpus processing remains available but is disabled
+by default so the wordfreq + manual build can complete reliably:
 
----
+```bash
+ENABLE_CORPUS=1 python main.py
+```
 
-## GitHub Actions
+For smoke tests:
 
-`/.github/workflows/release.yml` は以下を自動化します。
+```bash
+ENABLE_CORPUS=1 CORPUS_MAX_DOCS=1000 python main.py
+```
 
-1. タグ Push (`v*.*.*`) をトリガー。
-2. Python 環境をセットアップし、依存関係をインストール。
-3. `main.py` を実行し TSV を生成。
-4. ZIP 化して GitHub Release にアップロード。
+The corpus layer does not filter `token.is_stop`; it only requires alphabetic
+tokens and then applies the same normalization and deny-word rules as the
+wordfreq layer.
 
----
+## Scoring and merge rules
 
-## ライセンス (License)
+- Manual important words generally stay in the `700..2200` range.
+- Tech, mobile, IME, and product-name manual entries generally use
+  `1500..3500`.
+- wordfreq scores keep the existing Zipf-frequency and rank logic, with common
+  words receiving lower costs.
+- Inflection scores are slightly lower priority than their lemma scores.
+- Common phrases generally use `1200..2200`; tech phrases generally use
+  `1300..3000`.
+- Corpus scores keep the existing `-log(count / total)` idea and map corpus
+  words into a lower-priority integer range.
+- Scores are clamped to `0..32767` for generated layers.
+- Manual TSV scores must already be in `0..32767`.
+- Unigram merge key is `input_word + "\t" + output_word`.
+- Phrase merge key is `input_phrase + "\t" + output_phrase`.
+- Duplicate keys keep the lower score.
 
-Apache‑2.0.  詳細は `LICENSE` ファイルをご覧ください。
+## Build
+
+Install dependencies:
+
+```bash
+python -m pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+```
+
+The spaCy model is only required when `ENABLE_CORPUS=1`.
+
+Generate the artifacts:
+
+```bash
+python main.py
+```
+
+Verify generated TSVs, ZIP contents, required pairs, source summary structure,
+and minimum unigram coverage:
+
+```bash
+python verify_dictionary_output.py
+```
+
+## GitHub Actions release flow
+
+`.github/workflows/create-release.yml` runs on tag pushes matching `v*.*.*`.
+The workflow:
+
+- installs dependencies with `pip install -r requirements.txt`
+- runs `python main.py`
+- runs `python verify_dictionary_output.py`
+- checks ZIP contents before upload
+- creates a GitHub Release with the generated artifacts and license files
+
+Release upload targets include:
+
+```text
+1-grams_score_cost_pos_combined_with_ner.zip
+english_phrases.zip
+dictionary_source_summary.json
+NOTICE.md
+LICENSE
+LICENSES/**
+```
+
+## Outputs
+
+- `1-grams_score_cost_pos_combined_with_ner.txt`: final unigram dictionary TSV.
+- `1-grams_score_cost_pos_combined_with_ner.zip`: ZIP package containing the
+  unigram TSV, summary, and notice/license files when present.
+- `english_phrases.tsv`: final phrase dictionary TSV.
+- `english_phrases.zip`: ZIP package containing the phrase TSV, summary, and
+  notice/license files when present.
+- `dictionary_source_summary.json`: configuration, source counts, inflection
+  validation counts, SCOWL status, corpus status, and unigram/phrase merge
+  counts.
+
+## Licenses and notices
+
+Project code is licensed under Apache License 2.0. See `LICENSE`.
+
+Manual TSV files in this repository are project-authored data.
+
+Generated dictionary data includes wordfreq-derived data. The upstream
+`wordfreq` repository states that the code is redistributable under Apache
+License 2.0 and that it includes data files redistributable under Creative
+Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0), with additional
+source notices documented upstream.
+
+Relevant local notice files:
+
+- `NOTICE.md`
+- `LICENSES/wordfreq-NOTICE.md`
+- `LICENSES/CC-BY-SA-4.0.txt`
+
+When distributing generated dictionary data, include the generated ZIPs together
+with these notices and licenses.

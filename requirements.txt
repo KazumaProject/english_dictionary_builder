@@ -5,3 +5,4 @@ nltk
 huggingface-hub
 pyarrow
 spacy
+wordfreq

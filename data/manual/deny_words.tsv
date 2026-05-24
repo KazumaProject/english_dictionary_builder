@@ -1,0 +1,4 @@
+# Add one lowercase word per line to exclude it from wordfreq, corpus, and optional SCOWL layers.
+# Lines beginning with # are comments.
+# This file is for project-controlled exclusions such as offensive words or words unwanted in the IME dictionary.
+# Manual TSV entries are explicit additions and are not filtered by this deny list.

@@ -20,21 +20,57 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install dependencies and spaCy model
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          python -m spacy download en_core_web_sm
 
       - name: Run script to generate n-gram file
         run: python main.py
 
-      - name: Archive production artifacts
+      - name: Verify generated dictionary
+        run: python verify_dictionary_output.py
+
+      - name: Check release artifact contents
         run: |
-          ARTIFACT_FILE="1-grams_score_cost_pos_combined_with_ner.txt"
-          zip "${ARTIFACT_FILE%.txt}.zip" "$ARTIFACT_FILE"
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile
+
+          required_files = [
+              Path("1-grams_score_cost_pos_combined_with_ner.zip"),
+              Path("english_phrases.zip"),
+              Path("dictionary_source_summary.json"),
+          ]
+          for path in required_files:
+              if not path.exists():
+                  raise SystemExit(f"Missing required artifact: {path}")
+
+          required_zip_members = {
+              "1-grams_score_cost_pos_combined_with_ner.zip": [
+                  "1-grams_score_cost_pos_combined_with_ner.txt",
+                  "dictionary_source_summary.json",
+              ],
+              "english_phrases.zip": [
+                  "english_phrases.tsv",
+                  "dictionary_source_summary.json",
+              ],
+          }
+          for zip_name, members in required_zip_members.items():
+              with zipfile.ZipFile(zip_name) as zf:
+                  names = set(zf.namelist())
+                  missing = [member for member in members if member not in names]
+                  if missing:
+                      raise SystemExit(f"{zip_name} missing required member(s): {missing}")
+          PY
 
       - name: Create Release and Upload Asset
         uses: softprops/action-gh-release@v2
         with:
-          files: ./*.zip
+          files: |
+            1-grams_score_cost_pos_combined_with_ner.zip
+            english_phrases.zip
+            dictionary_source_summary.json
+            NOTICE.md
+            LICENSE
+            LICENSES/**
