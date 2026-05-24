@@ -1,0 +1,238 @@
+{
+  "configuration": {
+    "word_freq_top_n": 100000,
+    "word_freq_wordlist": "large",
+    "enable_corpus": false,
+    "corpus_max_docs": 0,
+    "output_filename": "1-grams_score_cost_pos_combined_with_ner.txt",
+    "zip_filename": "1-grams_score_cost_pos_combined_with_ner.zip"
+  },
+  "sources": {
+    "deny_words": {
+      "path": "data/manual/deny_words.tsv",
+      "read_lines": 4,
+      "valid_words": 0
+    },
+    "manual": {
+      "basic_words": {
+        "path": "data/manual/basic_words.tsv",
+        "read_rows": 110,
+        "valid_rows": 110,
+        "excluded_rows": 0
+      },
+      "contractions": {
+        "path": "data/manual/contractions.tsv",
+        "read_rows": 41,
+        "valid_rows": 41,
+        "excluded_rows": 0
+      },
+      "spelling_variants": {
+        "path": "data/manual/spelling_variants.tsv",
+        "read_rows": 34,
+        "valid_rows": 34,
+        "excluded_rows": 0
+      },
+      "tech_common_words": {
+        "path": "data/manual/tech_common_words.tsv",
+        "read_rows": 42,
+        "valid_rows": 42,
+        "excluded_rows": 0
+      }
+    },
+    "wordfreq": {
+      "requested_top_n": 100000,
+      "wordlist": "large",
+      "read_words": 115999,
+      "valid_words": 100000,
+      "excluded_words": 6208,
+      "excluded_by_reason": {
+        "invalid_format": 6208
+      },
+      "min_zipf": 1.9,
+      "max_zipf": 7.73
+    },
+    "scowl": {
+      "path": "external_sources/scowl/words.txt",
+      "present": false,
+      "read_words": 0,
+      "valid_words": 0,
+      "excluded_words": 0
+    },
+    "corpus": {
+      "enabled": false,
+      "read_documents": 0,
+      "valid_words": 0,
+      "excluded_words": 0,
+      "datasets": [
+        {
+          "name": "wikitext",
+          "config": "wikitext-103-v1",
+          "split": "train",
+          "column": "text"
+        }
+      ]
+    }
+  },
+  "merge": {
+    "input_entries": 100227,
+    "output_entries": 100057,
+    "unique_input_words": 100005,
+    "rejected_entries": 0,
+    "source_counts_before_merge": {
+      "manual:basic_words": 110,
+      "manual:contractions": 41,
+      "manual:spelling_variants": 34,
+      "manual:tech_common_words": 42,
+      "wordfreq": 100000
+    },
+    "source_counts_after_merge": {
+      "manual:basic_words": 110,
+      "manual:contractions": 41,
+      "manual:tech_common_words": 42,
+      "wordfreq": 99830,
+      "manual:spelling_variants": 34
+    }
+  },
+  "sample_entries": [
+    {
+      "input_word": "a",
+      "output_word": "a",
+      "pos_tag": "DET",
+      "score": 700,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "an",
+      "output_word": "an",
+      "pos_tag": "DET",
+      "score": 700,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "i",
+      "output_word": "I",
+      "pos_tag": "PRON",
+      "score": 700,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "is",
+      "output_word": "is",
+      "pos_tag": "AUX",
+      "score": 700,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "of",
+      "output_word": "of",
+      "pos_tag": "ADP",
+      "score": 700,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "the",
+      "output_word": "the",
+      "pos_tag": "DET",
+      "score": 700,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "to",
+      "output_word": "to",
+      "pos_tag": "ADP",
+      "score": 700,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "you",
+      "output_word": "you",
+      "pos_tag": "PRON",
+      "score": 700,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "and",
+      "output_word": "and",
+      "pos_tag": "CCONJ",
+      "score": 750,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "are",
+      "output_word": "are",
+      "pos_tag": "AUX",
+      "score": 750,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "in",
+      "output_word": "in",
+      "pos_tag": "ADP",
+      "score": 750,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "at",
+      "output_word": "at",
+      "pos_tag": "ADP",
+      "score": 800,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "because",
+      "output_word": "because",
+      "pos_tag": "SCONJ",
+      "score": 800,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "but",
+      "output_word": "but",
+      "pos_tag": "CCONJ",
+      "score": 800,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "for",
+      "output_word": "for",
+      "pos_tag": "ADP",
+      "score": 800,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "he",
+      "output_word": "he",
+      "pos_tag": "PRON",
+      "score": 800,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "it",
+      "output_word": "it",
+      "pos_tag": "PRON",
+      "score": 800,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "not",
+      "output_word": "not",
+      "pos_tag": "PART",
+      "score": 800,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "on",
+      "output_word": "on",
+      "pos_tag": "ADP",
+      "score": 800,
+      "source": "manual:basic_words"
+    },
+    {
+      "input_word": "or",
+      "output_word": "or",
+      "pos_tag": "CCONJ",
+      "score": 800,
+      "source": "manual:basic_words"
+    }
+  ]
+}

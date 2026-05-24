@@ -1,0 +1,4 @@
+Place the official SCOWL / English Speller Database license or copyright notice
+here when adding external_sources/scowl/words.txt.
+
+This placeholder is not a substitute for the upstream license notice.
